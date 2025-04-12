@@ -33,7 +33,7 @@
 #include "sound_init.h"
 #include "rumble_init.h"
 
-
+static struct Object *marker = NULL;
 /**************************************************
  *                    ANIMATIONS                  *
  **************************************************/
@@ -1613,6 +1613,115 @@ u32 update_and_return_cap_flags(struct MarioState *m) {
     return flags;
 }
 
+#define GRID_SIZE 300
+#define GRID_MAP_SIZE 64 // size of world grid
+
+u8 gPlacedObjectGridMap[GRID_MAP_SIZE][GRID_MAP_SIZE][GRID_MAP_SIZE];
+
+s32 to_grid_index(f32 pos) {
+    return (s32)(roundf(pos / GRID_SIZE) + (GRID_MAP_SIZE / 2));
+}
+
+s32 from_grid_index(s32 i) {
+    return i * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+}
+void update_player_object_placement(struct MarioState *m) {
+    s16 yaw = m->faceAngle[1];
+    f32 distance = 160.0f;
+
+    f32 offsetX = (f32)(sins(yaw)) * distance / 32768.0f;
+    f32 offsetZ = (f32)(coss(yaw)) * distance / 32768.0f;
+
+    f32 rawX = m->pos[0] + offsetX;
+    f32 rawZ = m->pos[2] + offsetZ;
+    f32 rawY = m->pos[1];
+
+    s32 gridX = to_grid_index(rawX);
+    s32 gridY = to_grid_index(rawY);
+    s32 gridZ = to_grid_index(rawZ);
+
+    if (gridX < 0 || gridX >= GRID_MAP_SIZE ||
+        gridY < 0 || gridY >= GRID_MAP_SIZE ||
+        gridZ < 0 || gridZ >= GRID_MAP_SIZE)
+        return;
+
+    s32 snappedX = gridX * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+    s32 snappedY = gridY * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+    s32 snappedZ = gridZ * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+
+    if (gPlayer1Controller->buttonPressed & L_TRIG && marker != NULL) {
+        s32 markerGridX = to_grid_index(marker->oPosX);
+        s32 markerGridY = to_grid_index(marker->oPosY);
+        s32 markerGridZ = to_grid_index(marker->oPosZ);
+    
+        if (!gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ]) {
+            gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ] = 1;
+    
+            s32 snappedX = markerGridX * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+            s32 snappedY = markerGridY * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+            s32 snappedZ = markerGridZ * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+    
+            spawn_object_abs_with_rot(
+                m->marioObj, 0,
+                MODEL_METAL_BOX,
+                bhvPushableMetalBox,
+                snappedX, snappedY, snappedZ,
+                0, 0, 0
+            );
+        }
+    }
+    
+    
+
+    if ((gPlayer1Controller->buttonPressed & D_JPAD) && marker != NULL) {
+        struct Object *obj;
+        for (obj = gObjectPool; obj < &gObjectPool[OBJECT_POOL_CAPACITY]; obj++) {
+            if (obj->activeFlags != ACTIVE_FLAG_ACTIVE) continue;
+            if (obj->header.gfx.sharedChild != gLoadedGraphNodes[MODEL_METAL_BOX]) continue;
+    
+            f32 dx = obj->oPosX - marker->oPosX;
+            f32 dy = obj->oPosY - marker->oPosY;
+            f32 dz = obj->oPosZ - marker->oPosZ;
+    
+            f32 distanceSquared = dx * dx + dy * dy + dz * dz;
+            f32 deleteRadius = 100.0f;
+    
+            if (distanceSquared <= deleteRadius * deleteRadius) {
+                obj_mark_for_deletion(obj);
+                break;
+            }
+        }
+    }    
+}
+
+void update_marker(struct MarioState *m) {
+    if ((gPlayer1Controller->buttonPressed & R_JPAD) && marker == NULL) {
+        marker = spawn_object(m->marioObj, MODEL_MARKER, bhvMarker);
+    }
+
+    if (marker != NULL) {
+        f32 distance = 300.0f;
+        f32 yaw = m->faceAngle[1] * (2.0f * M_PI / 65536.0f);
+
+        f32 targetX = m->pos[0] + sinf(yaw) * distance;
+        f32 targetZ = m->pos[2] + cosf(yaw) * distance;
+        f32 targetY = m->pos[1] + 10.0f;
+
+        s32 gridX = to_grid_index(targetX);
+        s32 gridY = to_grid_index(targetY);
+        s32 gridZ = to_grid_index(targetZ);
+
+        marker->oPosX = from_grid_index(gridX);
+        marker->oPosY = from_grid_index(gridY);
+        marker->oPosZ = from_grid_index(gridZ);
+    }
+
+    if ((gPlayer1Controller->buttonPressed & L_JPAD) && marker != NULL) {
+        obj_mark_for_deletion(marker);
+        marker = NULL;
+    }
+}
+
 /**
  * Updates the Mario's cap, rendering, and hitbox.
  */
@@ -1662,6 +1771,8 @@ void mario_update_hitbox_and_cap_model(struct MarioState *m) {
         bodyState->modelState &= ~MODEL_STATE_MASK;
         bodyState->modelState |= (MODEL_STATE_ALPHA | m->fadeWarpOpacity);
     }
+    update_player_object_placement(m);
+    update_marker(m);
 }
 
 /**

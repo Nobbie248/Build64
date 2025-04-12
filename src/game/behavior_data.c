@@ -6083,3 +6083,11 @@ const BehaviorScript RM_Scroll_Texture[] = {
         CALL_NATIVE(bhv_murder),
     END_LOOP(),
 };
+
+const BehaviorScript bhvMarker[] = {
+    BEGIN(OBJ_LIST_DEFAULT),
+    SET_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_FLOAT(oDrawingDistance, 10000),
+    CALL_NATIVE(bhv_marker_loop),
+    BREAK(),
+};
