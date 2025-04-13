@@ -1664,8 +1664,8 @@ void update_player_object_placement(struct MarioState *m) {
     
             spawn_object_abs_with_rot(
                 m->marioObj, 0,
-                MODEL_METAL_BOX,
-                bhvPushableMetalBox,
+                MODEL_BLOCK,
+                bhvBlock,
                 snappedX, snappedY, snappedZ,
                 0, 0, 0
             );
@@ -1679,21 +1679,14 @@ void update_player_object_placement(struct MarioState *m) {
         struct Object *obj;
         for (obj = gObjectPool; obj < &gObjectPool[OBJECT_POOL_CAPACITY]; obj++) {
             if (obj->activeFlags != ACTIVE_FLAG_ACTIVE) continue;
-            if (obj->header.gfx.sharedChild != gLoadedGraphNodes[MODEL_METAL_BOX]) continue;
+            if (obj == marker || obj == gMarioObject) continue;
     
-            f32 dx = obj->oPosX - marker->oPosX;
-            f32 dy = obj->oPosY - marker->oPosY;
-            f32 dz = obj->oPosZ - marker->oPosZ;
-    
-            f32 distanceSquared = dx * dx + dy * dy + dz * dz;
-            f32 deleteRadius = 100.0f;
-    
-            if (distanceSquared <= deleteRadius * deleteRadius) {
+            if (obj_check_if_collided_with_object(marker, obj)) {
                 obj_mark_for_deletion(obj);
                 break;
             }
         }
-    }    
+    }                   
 }
 
 void update_marker(struct MarioState *m) {
@@ -1720,7 +1713,9 @@ void update_marker(struct MarioState *m) {
         marker->oPosX = from_grid_index(gridX);
         marker->oPosY = from_grid_index(gridY);
         marker->oPosZ = from_grid_index(gridZ);
-        marker->oFaceAngleYaw = 0;
+        marker->oFaceAngleYaw = 0; // must remove for rotating object button later
+        marker->oFaceAnglePitch = 0;
+        marker->oFaceAngleRoll = 0;
     }
 
     if ((gPlayer1Controller->buttonPressed & L_JPAD) && marker != NULL) {

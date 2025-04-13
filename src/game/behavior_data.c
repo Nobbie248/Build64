@@ -6091,3 +6091,18 @@ const BehaviorScript bhvMarker[] = {
     CALL_NATIVE(bhv_marker_loop),
     BREAK(),
 };
+
+const BehaviorScript bhvBlock[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    SET_FLOAT(oCollisionDistance, 500),
+    SET_FLOAT(oDrawingDistance, 30000),
+    SET_INT(oIntangibleTimer, 0),
+    SET_INT(oInteractType, INTERACT_COIN),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(block_collision),
+    SET_HITBOX_WITH_OFFSET(/*Radius*/ 220, /*Height*/ 300, /*Downwards offset*/ 0),
+    SET_HOME(),
+    BEGIN_LOOP(),
+    CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};

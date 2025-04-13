@@ -26,3 +26,4 @@
 #include "wooden_signpost/geo.inc.c"
 #include "tree/geo.inc.c"
 #include "marker/geo.inc.c"
+#include "block/geo.inc.c"

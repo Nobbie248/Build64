@@ -89,3 +89,5 @@ UNUSED static const u64 binid_21 = 21;
 UNUSED static const u64 binid_22 = 22;
 #include "marker/collision.inc.c"
 #include "marker/model.inc.c"
+#include "block/collision.inc.c"
+#include "block/model.inc.c"

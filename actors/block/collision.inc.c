@@ -1,4 +1,4 @@
-const Collision marker_collision[] = {
+const Collision block_collision[] = {
 	COL_INIT(),
 	COL_VERTEX_INIT(8),
 	COL_VERTEX(-150, 0, 150),
