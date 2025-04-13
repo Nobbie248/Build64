@@ -1649,17 +1649,18 @@ void update_player_object_placement(struct MarioState *m) {
     s32 snappedY = gridY * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
     s32 snappedZ = gridZ * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
 
-    if (gPlayer1Controller->buttonPressed & L_TRIG && marker != NULL) {
+    if ((gPlayer1Controller->buttonPressed & L_TRIG) && marker != NULL) {
         s32 markerGridX = to_grid_index(marker->oPosX);
         s32 markerGridY = to_grid_index(marker->oPosY);
         s32 markerGridZ = to_grid_index(marker->oPosZ);
     
-        if (!gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ]) {
+        if (!gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ] //&& m->numCoins >= 5
+        ) {
             gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ] = 1;
     
-            s32 snappedX = markerGridX * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
-            s32 snappedY = markerGridY * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
-            s32 snappedZ = markerGridZ * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
+            s32 snappedX = from_grid_index(markerGridX);
+            s32 snappedY = from_grid_index(markerGridY);
+            s32 snappedZ = from_grid_index(markerGridZ);
     
             spawn_object_abs_with_rot(
                 m->marioObj, 0,
@@ -1668,10 +1669,11 @@ void update_player_object_placement(struct MarioState *m) {
                 snappedX, snappedY, snappedZ,
                 0, 0, 0
             );
+    
+            // m->numCoins -= 5;
+            // gHudDisplay.coins = m->numCoins;
         }
-    }
-    
-    
+    }    
 
     if ((gPlayer1Controller->buttonPressed & D_JPAD) && marker != NULL) {
         struct Object *obj;
@@ -1711,9 +1713,14 @@ void update_marker(struct MarioState *m) {
         s32 gridY = to_grid_index(targetY);
         s32 gridZ = to_grid_index(targetZ);
 
+        if (gPlayer1Controller->buttonDown & Z_TRIG) {
+            gridY -= 1;
+        }
+
         marker->oPosX = from_grid_index(gridX);
         marker->oPosY = from_grid_index(gridY);
         marker->oPosZ = from_grid_index(gridZ);
+        marker->oFaceAngleYaw = 0;
     }
 
     if ((gPlayer1Controller->buttonPressed & L_JPAD) && marker != NULL) {
