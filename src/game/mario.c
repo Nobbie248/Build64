@@ -1673,20 +1673,7 @@ void update_player_object_placement(struct MarioState *m) {
             // m->numCoins -= 5;
             // gHudDisplay.coins = m->numCoins;
         }
-    }    
-
-    if ((gPlayer1Controller->buttonPressed & D_JPAD) && marker != NULL) {
-        struct Object *obj;
-        for (obj = gObjectPool; obj < &gObjectPool[OBJECT_POOL_CAPACITY]; obj++) {
-            if (obj->activeFlags != ACTIVE_FLAG_ACTIVE) continue;
-            if (obj == marker || obj == gMarioObject) continue;
-    
-            if (obj_check_if_collided_with_object(marker, obj)) {
-                obj_mark_for_deletion(obj);
-                break;
-            }
-        }
-    }                   
+    }                        
 }
 
 void update_marker(struct MarioState *m) {
