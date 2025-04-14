@@ -78,6 +78,7 @@ void system_obj_loop(void) {
 void bhv_marker_loop(void) {
     o->oIntangibleTimer = 0;
     obj_set_hitbox(o, &sMarkerHitbox);
+    o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 }
 
 void update_player_object_placement(struct MarioState *m) {
@@ -128,11 +129,22 @@ void update_player_object_placement(struct MarioState *m) {
             // m->numCoins -= 5;
             // gHudDisplay.coins = m->numCoins;
         }
-    }                        
+    }                       
 }
 
 void update_marker(struct MarioState *m) {
-    if ((gPlayer1Controller->buttonPressed & R_JPAD) && marker == NULL) {
+    if (((m->action == ACT_DISAPPEARED) ||
+     (m->action == ACT_PUSHING_DOOR) ||
+     (m->action == ACT_PULLING_DOOR) ||
+     (m->flags & MARIO_TELEPORTING) ||
+     (gPlayer1Controller->buttonPressed & B_BUTTON)) && marker != NULL) {
+    
+        obj_mark_for_deletion(marker);
+        marker = NULL;
+        return;
+    }    
+
+    if ((gPlayer1Controller->buttonPressed & L_TRIG) && marker == NULL) {
         marker = spawn_object(m->marioObj, MODEL_MARKER, bhvMarker);
     }
 
