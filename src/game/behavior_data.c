@@ -6094,11 +6094,10 @@ const BehaviorScript bhvMarker[] = {
 
 const BehaviorScript bhvBlock[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    BEGIN(OBJ_LIST_GENACTOR),
     SET_INT(oInteractType, INTERACT_COIN),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     SET_FLOAT(oCollisionDistance, 500),
-    SET_FLOAT(oDrawingDistance, 30000),
+    SET_FLOAT(oDrawingDistance, 30000), 
     LOAD_COLLISION_DATA(block_collision),
     SET_HOME(),
     BEGIN_LOOP(),
