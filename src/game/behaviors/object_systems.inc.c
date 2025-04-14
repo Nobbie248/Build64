@@ -34,34 +34,12 @@
 static struct Object *marker = NULL;
 
 struct ObjectHitbox sBlockHitbox = { 
-    INTERACT_COIN, 0, 0, 1, 0, 60, 100, 60, 100,
+    INTERACT_COIN, 0, 0, 1, 0, 0, 0, 0, 0,
 };
 
 struct ObjectHitbox sMarkerHitbox = { 
-    INTERACT_COIN, 0, 0, 1, 0, 60, 100, 60, 100,
+    INTERACT_COIN, 0, 0, 1, 0, 0, 0, 0, 0,
 };
-
-void system_obj_loop(void) {
-    o->oIntangibleTimer = 0;
-    obj_set_hitbox(o, &sBlockHitbox);
-
-    struct Object *obj;
-    for (obj = gObjectPool; obj < &gObjectPool[OBJECT_POOL_CAPACITY]; obj++) {
-        if (obj == o || obj->activeFlags != ACTIVE_FLAG_ACTIVE) continue;
-        if (obj->behavior != segmented_to_virtual(bhvMarker)) continue;
-
-        if (obj_check_if_collided_with_object(o, obj) &&
-            (gPlayer1Controller->buttonPressed & D_JPAD)) {
-            obj_mark_for_deletion(o);
-            break;
-        }
-    }
-}
-
-void bhv_marker_loop(void) {
-    o->oIntangibleTimer = 0;
-    obj_set_hitbox(o, &sMarkerHitbox);
-}
 
 #define GRID_SIZE 300
 #define GRID_MAP_SIZE 64 // size of world grid
@@ -75,6 +53,33 @@ s32 to_grid_index(f32 pos) {
 s32 from_grid_index(s32 i) {
     return i * GRID_SIZE - (GRID_MAP_SIZE / 2 * GRID_SIZE);
 }
+
+void system_obj_loop(void) {
+    o->oIntangibleTimer = 0;
+    obj_set_hitbox(o, &sBlockHitbox);
+
+    if (marker != NULL && (gPlayer1Controller->buttonPressed & D_JPAD)) {
+        
+        s32 markerGX = to_grid_index(marker->oPosX);
+        s32 markerGY = to_grid_index(marker->oPosY);
+        s32 markerGZ = to_grid_index(marker->oPosZ);
+
+        s32 objGX = to_grid_index(o->oPosX);
+        s32 objGY = to_grid_index(o->oPosY);
+        s32 objGZ = to_grid_index(o->oPosZ);
+
+        if (markerGX == objGX && markerGY == objGY && markerGZ == objGZ) {
+            gPlacedObjectGridMap[objGX][objGY][objGZ] = 0;
+            obj_mark_for_deletion(o);
+        }
+    }
+}
+
+void bhv_marker_loop(void) {
+    o->oIntangibleTimer = 0;
+    obj_set_hitbox(o, &sMarkerHitbox);
+}
+
 void update_player_object_placement(struct MarioState *m) {
     s16 yaw = m->faceAngle[1];
     f32 distance = 160.0f;
@@ -153,10 +158,5 @@ void update_marker(struct MarioState *m) {
         marker->oFaceAngleYaw = 0; // must remove for rotating object button later
         marker->oFaceAnglePitch = 0;
         marker->oFaceAngleRoll = 0;
-    }
-
-    if ((gPlayer1Controller->buttonPressed & L_JPAD) && marker != NULL) {
-        obj_mark_for_deletion(marker);
-        marker = NULL;
     }
 }
