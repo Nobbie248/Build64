@@ -7,12 +7,14 @@ struct ObjectHitbox sBlockHitbox = {
 };
 
 struct ObjectHitbox sMarkerHitbox = { 
-    INTERACT_DAMAGE, 0, 0, 1, 0, 60, 100, 0, 0,
+    INTERACT_DAMAGE, 0, 0, 1, 0, 60, 100, 60, 100,
 };
-extern struct Object *marker;
+
 void system_obj_loop(void) {
+    o->oIntangibleTimer = 0;
     obj_set_hitbox(o, &sBlockHitbox);
-    struct Object* marker = cur_obj_nearest_object_with_behavior(bhvMarker);
+
+    struct Object *marker = cur_obj_nearest_object_with_behavior(bhvMarker);
 
     if (obj_check_if_collided_with_object(o, marker) &&
         (gPlayer1Controller->buttonPressed & D_JPAD)) {
@@ -22,5 +24,6 @@ void system_obj_loop(void) {
 }
 
 void bhv_marker_loop(void) {
+    o->oIntangibleTimer = 0;
     obj_set_hitbox(o, &sMarkerHitbox);
 }

@@ -6085,7 +6085,7 @@ const BehaviorScript RM_Scroll_Texture[] = {
 };
 
 const BehaviorScript bhvMarker[] = {
-    BEGIN(OBJ_LIST_DESTRUCTIVE),
+    BEGIN(OBJ_LIST_GENACTOR),
     SET_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     SET_FLOAT(oDrawingDistance, 10000),
     CALL_NATIVE(bhv_marker_loop),
@@ -6094,6 +6094,7 @@ const BehaviorScript bhvMarker[] = {
 
 const BehaviorScript bhvBlock[] = {
     BEGIN(OBJ_LIST_SURFACE),
+    BEGIN(OBJ_LIST_GENACTOR),
     SET_INT(oInteractType, INTERACT_COIN),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     SET_FLOAT(oCollisionDistance, 500),

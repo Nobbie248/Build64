@@ -33,7 +33,6 @@
 #include "sound_init.h"
 #include "rumble_init.h"
 
-static struct Object *marker = NULL;
 /**************************************************
  *                    ANIMATIONS                  *
  **************************************************/
@@ -1612,6 +1611,8 @@ u32 update_and_return_cap_flags(struct MarioState *m) {
 
     return flags;
 }
+
+static struct Object *marker = NULL;
 
 #define GRID_SIZE 300
 #define GRID_MAP_SIZE 64 // size of world grid
