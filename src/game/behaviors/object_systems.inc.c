@@ -1,35 +1,13 @@
-#include "game/level_update.h"
 #include "game/behavior_actions.h"
 #include "include/behavior_data.h"
-#include "src/game/ingame_menu.h"
 #include "src/game/interaction.h"
-#include "game/save_file.h"
-#include "game/hud.h"
-#include "src/game/print.h"
-#include "src/game/spawn_object.h"
 
 struct ObjectHitbox sBlockHitbox = { 
-    /* interactType: */ INTERACT_COIN,
-    /* downOffset: */ 0,
-    /* damageOrCoinValue: */ 0,
-    /* health: */ 1,
-    /* numLootCoins: */ 0,
-    /* radius: */ 60,
-    /* height: */ 100,
-    /* hurtboxRadius: */ 0,
-    /* hurtboxHeight: */ 0,
+    INTERACT_COIN, 0, 0, 1, 0, 60, 100, 0, 0,
 };
 
 struct ObjectHitbox sMarkerHitbox = { 
-    /* interactType: */ INTERACT_DAMAGE,
-    /* downOffset: */ 0,
-    /* damageOrCoinValue: */ 0,
-    /* health: */ 1,
-    /* numLootCoins: */ 0,
-    /* radius: */ 60,
-    /* height: */ 100,
-    /* hurtboxRadius: */ 0,
-    /* hurtboxHeight: */ 0,
+    INTERACT_DAMAGE, 0, 0, 1, 0, 60, 100, 0, 0,
 };
 extern struct Object *marker;
 void system_obj_loop(void) {
