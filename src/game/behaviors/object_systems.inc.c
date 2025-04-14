@@ -30,16 +30,10 @@
 #include "src/game/print.h"
 #include "src/game/save_file.h"
 #include "src/game/rumble_init.h"
+#include "src/game/hud.h"
 
 static struct Object *marker = NULL;
-
-struct ObjectHitbox sBlockHitbox = { 
-    INTERACT_COIN, 0, 0, 1, 0, 0, 0, 0, 0,
-};
-
-struct ObjectHitbox sMarkerHitbox = { 
-    INTERACT_COIN, 0, 0, 1, 0, 0, 0, 0, 0,
-};
+s8 gIsHotbar = FALSE;
 
 #define GRID_SIZE 300
 #define GRID_MAP_SIZE 64 // size of world grid
@@ -55,8 +49,6 @@ s32 from_grid_index(s32 i) {
 }
 
 void system_obj_loop(void) {
-    o->oIntangibleTimer = 0;
-    obj_set_hitbox(o, &sBlockHitbox);
 
     if (marker != NULL && (gPlayer1Controller->buttonPressed & D_JPAD)) {
         
@@ -76,8 +68,6 @@ void system_obj_loop(void) {
 }
 
 void bhv_marker_loop(void) {
-    o->oIntangibleTimer = 0;
-    obj_set_hitbox(o, &sMarkerHitbox);
     o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 }
 
@@ -138,7 +128,7 @@ void update_marker(struct MarioState *m) {
      (m->action == ACT_PULLING_DOOR) ||
      (m->flags & MARIO_TELEPORTING) ||
      (gPlayer1Controller->buttonPressed & B_BUTTON)) && marker != NULL) {
-    
+        gIsHotbar = FALSE;
         obj_mark_for_deletion(marker);
         marker = NULL;
         return;
@@ -146,6 +136,7 @@ void update_marker(struct MarioState *m) {
 
     if ((gPlayer1Controller->buttonPressed & L_TRIG) && marker == NULL) {
         marker = spawn_object(m->marioObj, MODEL_MARKER, bhvMarker);
+        gIsHotbar = TRUE;
     }
 
     if (marker != NULL) {
