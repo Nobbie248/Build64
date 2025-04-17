@@ -1611,6 +1611,8 @@ void render_widescreen_setting(void) {
     }
     if (gPlayer1Controller->buttonPressed & R_JPAD){
         save_placed_blocks(gCurrSaveFileNum, gCurrCourseNum - 1);
+        save_file_do_save(gCurrSaveFileNum - 1);
+        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
     }
 }
 #endif

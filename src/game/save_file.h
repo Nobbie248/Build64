@@ -9,7 +9,8 @@
 
 #include "course_table.h"
 
-#define MAX_SAVED_BLOCKS 256
+#define MAX_SAVED_BLOCKS 50
+
 #define COURSE_COUNT 15
 
 #if defined(SRAM)
@@ -89,7 +90,7 @@ struct MainMenuSaveData {
 
 struct SaveBuffer {
     // Each of the four save files has two copies. If one is bad, the other is used as a backup.
-    struct SaveFile files[NUM_SAVE_FILES][2];
+    struct SaveFile files[NUM_SAVE_FILES][1];
     // Main menu data, storing config options.
     struct MainMenuSaveData menuData;
 };
@@ -206,6 +207,9 @@ void save_file_move_cap_to_default_location(void);
 void disable_warp_checkpoint(void);
 void check_if_should_set_warp_checkpoint(struct WarpNode *warpNode);
 s32 check_warp_checkpoint(struct WarpNode *warpNode);
+
+void save_placed_blocks(u8 fileIndex, u8 courseIndex);
+void load_saved_blocks(u8 fileIndex, u8 courseIndex);
 
 #ifdef MULTILANG
 void multilang_set_language(u32 language);

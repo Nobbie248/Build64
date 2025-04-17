@@ -262,31 +262,37 @@ void load_objects_from_grid(void) {
 
 void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
     u16 count = 0;
+    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].count = 0;
+
     for (s32 x = 0; x < GRID_MAP_SIZE; x++) {
         for (s32 y = 0; y < GRID_MAP_SIZE; y++) {
             for (s32 z = 0; z < GRID_MAP_SIZE; z++) {
                 u8 type = gPlacedObjectGridMap[x][y][z].type;
                 s16 yaw = gPlacedObjectGridMap[x][y][z].yaw;
+
                 if (type != 0 && count < MAX_SAVED_BLOCKS) {
-                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].x = x;
-                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].y = y;
-                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].z = z;
-                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].type = type;
-                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].yaw = yaw;
-                    count++;
+                    struct SavedBlock *b = &gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count++];
+                    b->x = x;
+                    b->y = y;
+                    b->z = z;
+                    b->type = type;
+                    b->yaw = yaw;
                 }
             }
         }
     }
+
     gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].count = count;
     gMainMenuDataModified = TRUE;
 }
 
 void load_saved_blocks(u8 fileIndex, u8 courseIndex) {
+    struct SavedCourseBlocks *blocks = &gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex];
+
     memset(gPlacedObjectGridMap, 0, sizeof(gPlacedObjectGridMap));
-    u16 count = gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].count;
-    for (u16 i = 0; i < count; i++) {
-        struct SavedBlock *b = &gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[i];
+
+    for (u16 i = 0; i < blocks->count; i++) {
+        struct SavedBlock *b = &blocks->blocks[i];
         gPlacedObjectGridMap[b->x][b->y][b->z].type = b->type;
         gPlacedObjectGridMap[b->x][b->y][b->z].yaw = b->yaw;
     }

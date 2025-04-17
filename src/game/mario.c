@@ -1802,7 +1802,6 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
  **************************************************/
 
 void init_mario(void) {
-    load_saved_blocks(gCurrSaveFileNum, gCurrCourseNum - 1);
     load_objects_from_grid();
     gMarioState->actionTimer = 0;
     gMarioState->framesSinceA = 0xFF;
@@ -1874,6 +1873,7 @@ void init_mario(void) {
 }
 
 void init_mario_from_save_file(void) {
+    load_saved_blocks(gCurrSaveFileNum, gCurrCourseNum - 1);
     gMarioState->playerID = 0;
     gMarioState->flags = MARIO_NONE;
     gMarioState->action = ACT_UNINITIALIZED;
