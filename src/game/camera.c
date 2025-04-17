@@ -1135,19 +1135,19 @@ void mode_8_directions_camera(struct Camera *c) {
     }
 #ifdef PARALLEL_LAKITU_CAM
     // extra functionality
-    else if (gPlayer1Controller->buttonPressed & U_JPAD) {
+    else if ((gPlayer1Controller->buttonPressed & U_JPAD) && !gIsMarkerActive) {
         s8DirModeYawOffset = 0;
         s8DirModeYawOffset = gMarioState->faceAngle[1] - 0x8000;
     }
-    else if (gPlayer1Controller->buttonDown & L_JPAD) {
+    else if ((gPlayer1Controller->buttonDown & L_JPAD) && !gIsMarkerActive) {
         s8DirModeYawOffset -= DEGREES(2);
     }
-    else if (gPlayer1Controller->buttonDown & R_JPAD) {
+    else if ((gPlayer1Controller->buttonDown & R_JPAD) && !gIsMarkerActive) {
         s8DirModeYawOffset += DEGREES(2);
     }
-    else if (gPlayer1Controller->buttonPressed & D_JPAD) {
+    else if ((gPlayer1Controller->buttonPressed & D_JPAD) && !gIsMarkerActive) {
         s8DirModeYawOffset = snap_to_45_degrees(s8DirModeYawOffset);
-    }
+    }    
 #endif
 
     lakitu_zoom(400.f, 0x900);

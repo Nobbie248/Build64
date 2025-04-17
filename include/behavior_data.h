@@ -542,5 +542,6 @@ extern const BehaviorScript bhvIntroScene[];
 extern const BehaviorScript bhvUnusedFakeStar[];
 extern const BehaviorScript bhvMarker[];
 extern const BehaviorScript bhvBlock[];
+extern const BehaviorScript bhvBlock2[];
 
 #endif // BEHAVIOR_DATA_H

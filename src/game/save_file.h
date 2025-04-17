@@ -9,6 +9,9 @@
 
 #include "course_table.h"
 
+#define MAX_SAVED_BLOCKS 1024
+#define COURSE_COUNT 15
+
 #if defined(SRAM)
     #define EEPROM_SIZE 0x8000
 #elif defined(EEP16K)
@@ -19,9 +22,24 @@
 
 #define NUM_SAVE_FILES 4
 
+#ifdef SRAM
+#define SRAM_SIZE 0x80000
+#endif
+
 struct SaveBlockSignature {
     u16 magic;
     u16 chksum;
+};
+
+struct SavedBlock {
+    s8 x, y, z;
+    u8 type;
+    s16 yaw;
+};
+
+struct SavedCourseBlocks {
+    struct SavedBlock blocks[MAX_SAVED_BLOCKS];
+    u16 count;
 };
 
 struct SaveFile {
@@ -40,7 +58,7 @@ struct SaveFile {
     // The most significant bit of the byte *following* each course is set if the
     // cannon is open.
     u8 courseStars[COURSE_COUNT]; // 200 bits
-
+    struct SavedCourseBlocks courseBlocks[COURSE_COUNT];
     u8 courseCoinScores[COURSE_STAGES_COUNT]; // 120 bits
 
     struct SaveBlockSignature signature; // 32 bits
@@ -86,7 +104,12 @@ extern void puppycam_get_save(void);
 extern void puppycam_check_save(void);
 #endif
 
-STATIC_ASSERT(sizeof(struct SaveBuffer) <= EEPROM_SIZE, "ERROR: Save struct too big for specified save type");
+#if defined(SRAM)
+STATIC_ASSERT(sizeof(struct SaveBuffer) <= SRAM_SIZE, "ERROR: Save struct too big for SRAM");
+#else
+STATIC_ASSERT(sizeof(struct SaveBuffer) <= EEPROM_SIZE, "ERROR: Save struct too big for EEPROM");
+#endif
+
 
 extern u8 gLastCompletedCourseNum;
 extern u8 gLastCompletedStarNum;
@@ -198,5 +221,7 @@ void multilang_set_language(u32 language);
 u32 multilang_get_language(void);
 u32 get_language_index(u32 language);
 #endif
+
+extern struct SaveBuffer gSaveBuffer;
 
 #endif // SAVE_FILE_H

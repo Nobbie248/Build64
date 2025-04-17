@@ -27,3 +27,5 @@
 #include "tree/geo.inc.c"
 #include "marker/geo.inc.c"
 #include "block/geo.inc.c"
+#include "block2/geo.inc.c"
+#include "marker2/geo.inc.c"

@@ -31,14 +31,47 @@
 #include "src/game/save_file.h"
 #include "src/game/rumble_init.h"
 #include "src/game/hud.h"
+#include <string.h>
 
 static struct Object *marker = NULL;
 s8 gIsHotbar = FALSE;
+static s16 gBlockRotationYaw = 0;
+static s8 gSelectedBlockType = 0;
+static s8 gSelectedMarkerType = 0;
+u8 gIsMarkerActive = FALSE;
 
-#define GRID_SIZE 150
+#define GRID_SIZE 300
 #define GRID_MAP_SIZE 64 // size of world grid
+#define MARKER_TYPE_COUNT 10
+#define BLOCK_TYPE_COUNT 10
 
-u8 gPlacedObjectGridMap[GRID_MAP_SIZE][GRID_MAP_SIZE][GRID_MAP_SIZE];
+static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
+    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER,
+    MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER
+};
+
+static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = {
+    bhvMarker, bhvMarker, bhvMarker, bhvMarker, bhvMarker,
+    bhvMarker, bhvMarker, bhvMarker, bhvMarker, bhvMarker
+};
+
+static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
+    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK,
+    MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK
+};
+
+static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
+    bhvBlock, bhvBlock2, bhvBlock, bhvBlock, bhvBlock,
+    bhvBlock, bhvBlock, bhvBlock, bhvBlock, bhvBlock
+};
+
+struct PlacedBlock {
+    u8 type;
+    s16 yaw;
+};
+
+struct PlacedBlock gPlacedObjectGridMap[GRID_MAP_SIZE][GRID_MAP_SIZE][GRID_MAP_SIZE];
+
 
 s32 to_grid_index(f32 pos) {
     return (s32)(roundf(pos / GRID_SIZE) + (GRID_MAP_SIZE / 2));
@@ -49,13 +82,7 @@ s32 from_grid_index(s32 i) {
 }
 
 void system_obj_loop(void) {
-    o->header.gfx.scale[0] = 0.5f;
-    o->header.gfx.scale[1] = 0.5f;
-    o->header.gfx.scale[2] = 0.5f;
-
-
     if (marker != NULL && (gPlayer1Controller->buttonPressed & D_JPAD)) {
-        
         s32 markerGX = to_grid_index(marker->oPosX);
         s32 markerGY = to_grid_index(marker->oPosY);
         s32 markerGZ = to_grid_index(marker->oPosZ);
@@ -65,16 +92,14 @@ void system_obj_loop(void) {
         s32 objGZ = to_grid_index(o->oPosZ);
 
         if (markerGX == objGX && markerGY == objGY && markerGZ == objGZ) {
-            gPlacedObjectGridMap[objGX][objGY][objGZ] = 0;
+            gPlacedObjectGridMap[objGX][objGY][objGZ].type = 0;
+            gPlacedObjectGridMap[objGX][objGY][objGZ].yaw = 0;
             obj_mark_for_deletion(o);
         }
     }
 }
 
 void bhv_marker_loop(void) {
-    o->header.gfx.scale[0] = 0.5f;
-    o->header.gfx.scale[1] = 0.5f;
-    o->header.gfx.scale[2] = 0.5f;
     o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 }
 
@@ -106,27 +131,51 @@ void update_player_object_placement(struct MarioState *m) {
         s32 markerGridX = to_grid_index(marker->oPosX);
         s32 markerGridY = to_grid_index(marker->oPosY);
         s32 markerGridZ = to_grid_index(marker->oPosZ);
-    
-        if (!gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ]
-        ) {
-            gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ] = 1;
-    
+
+        if (gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ].type == 0) {
+            gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ].type = gSelectedBlockType + 1;
+            gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ].yaw = gBlockRotationYaw;
+
+
             s32 snappedX = from_grid_index(markerGridX);
             s32 snappedY = from_grid_index(markerGridY);
             s32 snappedZ = from_grid_index(markerGridZ);
-    
+
             spawn_object_abs_with_rot(
                 m->marioObj, 0,
-                MODEL_BLOCK,
-                bhvBlock,
+                BlockModels[gSelectedBlockType],
+                BlockBehaviors[gSelectedBlockType],
                 snappedX, snappedY, snappedZ,
-                0, 0, 0
+                0, gBlockRotationYaw, 0
             );
         }
-    }                       
+    }
+
+    if (gPlayer1Controller->buttonPressed & D_JPAD) {
+        gBlockRotationYaw += 0x4000;
+    }
+    if (gPlayer1Controller->buttonPressed & U_JPAD) {
+        gBlockRotationYaw -= 0x4000;
+    }
+
+    if (gPlayer1Controller->buttonPressed & R_JPAD) {
+        gSelectedBlockType = (gSelectedBlockType + 1) % BLOCK_TYPE_COUNT;
+        gSelectedMarkerType = (gSelectedMarkerType + 1) % MARKER_TYPE_COUNT;
+        if (marker != NULL) {
+            obj_mark_for_deletion(marker);
+            marker = spawn_object(gMarioObject, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);
+        }
+    }
+    if (gPlayer1Controller->buttonPressed & L_JPAD) {
+        gSelectedBlockType = (gSelectedBlockType - 1 + BLOCK_TYPE_COUNT) % BLOCK_TYPE_COUNT;
+        gSelectedMarkerType = (gSelectedMarkerType - 1 + MARKER_TYPE_COUNT) % MARKER_TYPE_COUNT;
+        if (marker != NULL) {
+            obj_mark_for_deletion(marker);
+            marker = spawn_object(gMarioObject, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);
+        }
+    }    
 }
 
-// this is the preview state ready to place
 void update_marker(struct MarioState *m) {
     if (((m->action == ACT_DISAPPEARED) ||
      (m->action == ACT_PUSHING_DOOR) ||
@@ -136,12 +185,14 @@ void update_marker(struct MarioState *m) {
         gIsHotbar = FALSE;
         obj_mark_for_deletion(marker);
         marker = NULL;
+        gIsMarkerActive = FALSE;
         return;
-    }    
+    }
 
     if ((gPlayer1Controller->buttonPressed & L_TRIG) && marker == NULL) {
-        marker = spawn_object(m->marioObj, MODEL_MARKER, bhvMarker);
+        marker = spawn_object(m->marioObj, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);
         gIsHotbar = TRUE;
+        gIsMarkerActive = TRUE;
     }
 
     if (marker != NULL) {
@@ -163,18 +214,20 @@ void update_marker(struct MarioState *m) {
         marker->oPosX = from_grid_index(gridX);
         marker->oPosY = from_grid_index(gridY);
         marker->oPosZ = from_grid_index(gridZ);
-        marker->oFaceAngleYaw = 0; // must remove for rotating object button later
+        marker->oFaceAngleYaw = 0;
+        marker->oFaceAngleYaw = gBlockRotationYaw;
         marker->oFaceAnglePitch = 0;
         marker->oFaceAngleRoll = 0;
     }
 }
 
-// load in stored placements
 void load_objects_from_grid(void) {
     for (s32 x = 0; x < GRID_MAP_SIZE; x++) {
         for (s32 y = 0; y < GRID_MAP_SIZE; y++) {
             for (s32 z = 0; z < GRID_MAP_SIZE; z++) {
-                if (gPlacedObjectGridMap[x][y][z]) {
+                u8 blockIndex = gPlacedObjectGridMap[x][y][z].type;
+                s16 blockYaw = gPlacedObjectGridMap[x][y][z].yaw;
+                if (blockIndex) {
                     s32 worldX = from_grid_index(x);
                     s32 worldY = from_grid_index(y);
                     s32 worldZ = from_grid_index(z);
@@ -183,7 +236,7 @@ void load_objects_from_grid(void) {
                     s32 exists = FALSE;
                     for (obj = gObjectPool; obj < &gObjectPool[OBJECT_POOL_CAPACITY]; obj++) {
                         if (obj->activeFlags != ACTIVE_FLAG_ACTIVE) continue;
-                        if (obj->behavior != segmented_to_virtual(bhvBlock)) continue;
+                        if (obj->behavior != segmented_to_virtual(BlockBehaviors[blockIndex - 1])) continue;
                         if (to_grid_index(obj->oPosX) == x &&
                             to_grid_index(obj->oPosY) == y &&
                             to_grid_index(obj->oPosZ) == z) {
@@ -195,14 +248,46 @@ void load_objects_from_grid(void) {
                     if (!exists) {
                         spawn_object_abs_with_rot(
                             gMarioObject, 0,
-                            MODEL_BLOCK,
-                            bhvBlock,
+                            BlockModels[blockIndex - 1],
+                            BlockBehaviors[blockIndex - 1],
                             worldX, worldY, worldZ,
-                            0, 0, 0
-                        );
+                            0, blockYaw, 0
+                        );                        
                     }
                 }
             }
         }
     }
-} 
+}
+
+void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
+    u16 count = 0;
+    for (s32 x = 0; x < GRID_MAP_SIZE; x++) {
+        for (s32 y = 0; y < GRID_MAP_SIZE; y++) {
+            for (s32 z = 0; z < GRID_MAP_SIZE; z++) {
+                u8 type = gPlacedObjectGridMap[x][y][z].type;
+                s16 yaw = gPlacedObjectGridMap[x][y][z].yaw;
+                if (type != 0 && count < MAX_SAVED_BLOCKS) {
+                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].x = x;
+                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].y = y;
+                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].z = z;
+                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].type = type;
+                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].yaw = yaw;
+                    count++;
+                }
+            }
+        }
+    }
+    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].count = count;
+    gMainMenuDataModified = TRUE;
+}
+
+void load_saved_blocks(u8 fileIndex, u8 courseIndex) {
+    memset(gPlacedObjectGridMap, 0, sizeof(gPlacedObjectGridMap));
+    u16 count = gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].count;
+    for (u16 i = 0; i < count; i++) {
+        struct SavedBlock *b = &gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[i];
+        gPlacedObjectGridMap[b->x][b->y][b->z].type = b->type;
+        gPlacedObjectGridMap[b->x][b->y][b->z].yaw = b->yaw;
+    }
+}

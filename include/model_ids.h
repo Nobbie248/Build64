@@ -573,6 +573,9 @@
 #define MODEL_CASTLE_GROUNDS_WARP_PIPE            MODEL_LEVEL_GEOMETRY_16   // warp_pipe_geo
 
 #define MODEL_MARKER 0xE4
-#define MODEL_BLOCK 0xE5
+#define MODEL_MARKER2 0xE5
+
+#define MODEL_BLOCK 0xE6
+#define MODEL_BLOCK2 0xE7
 
 #endif // MODEL_IDS_H
