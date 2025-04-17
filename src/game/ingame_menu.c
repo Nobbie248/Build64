@@ -1614,6 +1614,10 @@ void render_widescreen_setting(void) {
         save_file_do_save(gCurrSaveFileNum - 1);
         play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
     }
+    if (gPlayer1Controller->buttonPressed & L_JPAD){
+        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
+        load_objects_from_grid();
+    }
 }
 #endif
 

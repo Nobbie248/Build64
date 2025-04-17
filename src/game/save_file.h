@@ -9,7 +9,7 @@
 
 #include "course_table.h"
 
-#define MAX_SAVED_BLOCKS 50
+#define MAX_SAVED_BLOCKS 70
 
 #define COURSE_COUNT 15
 

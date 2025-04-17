@@ -261,8 +261,8 @@ void load_objects_from_grid(void) {
 }
 
 void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
-    u16 count = 0;
-    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].count = 0;
+    struct SavedCourseBlocks *blocks = &gSaveBuffer.files[fileIndex][fileIndex].courseBlocks[courseIndex];
+    blocks->count = 0;
 
     for (s32 x = 0; x < GRID_MAP_SIZE; x++) {
         for (s32 y = 0; y < GRID_MAP_SIZE; y++) {
@@ -270,8 +270,8 @@ void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
                 u8 type = gPlacedObjectGridMap[x][y][z].type;
                 s16 yaw = gPlacedObjectGridMap[x][y][z].yaw;
 
-                if (type != 0 && count < MAX_SAVED_BLOCKS) {
-                    struct SavedBlock *b = &gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count++];
+                if (type != 0 && blocks->count < MAX_SAVED_BLOCKS) {
+                    struct SavedBlock *b = &blocks->blocks[blocks->count++];
                     b->x = x;
                     b->y = y;
                     b->z = z;
@@ -282,12 +282,11 @@ void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
         }
     }
 
-    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].count = count;
     gMainMenuDataModified = TRUE;
 }
 
 void load_saved_blocks(u8 fileIndex, u8 courseIndex) {
-    struct SavedCourseBlocks *blocks = &gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex];
+    struct SavedCourseBlocks *blocks = &gSaveBuffer.files[fileIndex][fileIndex].courseBlocks[courseIndex];
 
     memset(gPlacedObjectGridMap, 0, sizeof(gPlacedObjectGridMap));
 
