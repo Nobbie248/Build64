@@ -35,7 +35,7 @@
 static struct Object *marker = NULL;
 s8 gIsHotbar = FALSE;
 
-#define GRID_SIZE 300
+#define GRID_SIZE 150
 #define GRID_MAP_SIZE 64 // size of world grid
 
 u8 gPlacedObjectGridMap[GRID_MAP_SIZE][GRID_MAP_SIZE][GRID_MAP_SIZE];
@@ -49,6 +49,10 @@ s32 from_grid_index(s32 i) {
 }
 
 void system_obj_loop(void) {
+    o->header.gfx.scale[0] = 0.5f;
+    o->header.gfx.scale[1] = 0.5f;
+    o->header.gfx.scale[2] = 0.5f;
+
 
     if (marker != NULL && (gPlayer1Controller->buttonPressed & D_JPAD)) {
         
@@ -68,6 +72,9 @@ void system_obj_loop(void) {
 }
 
 void bhv_marker_loop(void) {
+    o->header.gfx.scale[0] = 0.5f;
+    o->header.gfx.scale[1] = 0.5f;
+    o->header.gfx.scale[2] = 0.5f;
     o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 }
 
@@ -100,7 +107,7 @@ void update_player_object_placement(struct MarioState *m) {
         s32 markerGridY = to_grid_index(marker->oPosY);
         s32 markerGridZ = to_grid_index(marker->oPosZ);
     
-        if (!gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ] //&& m->numCoins >= 5
+        if (!gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ]
         ) {
             gPlacedObjectGridMap[markerGridX][markerGridY][markerGridZ] = 1;
     
@@ -115,13 +122,11 @@ void update_player_object_placement(struct MarioState *m) {
                 snappedX, snappedY, snappedZ,
                 0, 0, 0
             );
-    
-            // m->numCoins -= 5;
-            // gHudDisplay.coins = m->numCoins;
         }
     }                       
 }
 
+// this is the preview state ready to place
 void update_marker(struct MarioState *m) {
     if (((m->action == ACT_DISAPPEARED) ||
      (m->action == ACT_PUSHING_DOOR) ||
@@ -163,3 +168,41 @@ void update_marker(struct MarioState *m) {
         marker->oFaceAngleRoll = 0;
     }
 }
+
+// load in stored placements
+void load_objects_from_grid(void) {
+    for (s32 x = 0; x < GRID_MAP_SIZE; x++) {
+        for (s32 y = 0; y < GRID_MAP_SIZE; y++) {
+            for (s32 z = 0; z < GRID_MAP_SIZE; z++) {
+                if (gPlacedObjectGridMap[x][y][z]) {
+                    s32 worldX = from_grid_index(x);
+                    s32 worldY = from_grid_index(y);
+                    s32 worldZ = from_grid_index(z);
+
+                    struct Object *obj;
+                    s32 exists = FALSE;
+                    for (obj = gObjectPool; obj < &gObjectPool[OBJECT_POOL_CAPACITY]; obj++) {
+                        if (obj->activeFlags != ACTIVE_FLAG_ACTIVE) continue;
+                        if (obj->behavior != segmented_to_virtual(bhvBlock)) continue;
+                        if (to_grid_index(obj->oPosX) == x &&
+                            to_grid_index(obj->oPosY) == y &&
+                            to_grid_index(obj->oPosZ) == z) {
+                            exists = TRUE;
+                            break;
+                        }
+                    }
+
+                    if (!exists) {
+                        spawn_object_abs_with_rot(
+                            gMarioObject, 0,
+                            MODEL_BLOCK,
+                            bhvBlock,
+                            worldX, worldY, worldZ,
+                            0, 0, 0
+                        );
+                    }
+                }
+            }
+        }
+    }
+} 
