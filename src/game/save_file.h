@@ -9,7 +9,7 @@
 
 #include "course_table.h"
 
-#define MAX_SAVED_BLOCKS 700
+#define MAX_SAVED_BLOCKS 256
 #define COURSE_COUNT 15
 
 #if defined(SRAM)
@@ -100,10 +100,7 @@ extern void puppycam_get_save(void);
 extern void puppycam_check_save(void);
 #endif
 
-#ifdef SRAM
-#define SRAM_SIZE 0x80000
-_Static_assert(sizeof(struct SaveBuffer) <= 0x80000, "SaveBuffer size exceeds 512 KB");
-#endif
+STATIC_ASSERT(sizeof(struct SaveBuffer) <= EEPROM_SIZE, "ERROR: Save struct too big for specified save type");
 
 extern u8 gLastCompletedCourseNum;
 extern u8 gLastCompletedStarNum;

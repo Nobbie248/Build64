@@ -65,7 +65,6 @@ else ifeq ($(SAVETYPE),eep16k)
   DEFINES += EEP=1 EEP16K=1
 else ifeq ($(SAVETYPE),sram)
   DEFINES += SRAM=1
-  SAVE_SIZE = 0x80000
 endif
 
 DEFINES += NO_ERRNO_H=1 NO_GZIP=1
