@@ -268,25 +268,25 @@ void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
                 u8 type = gPlacedObjectGridMap[x][y][z].type;
                 s16 yaw = gPlacedObjectGridMap[x][y][z].yaw;
                 if (type != 0 && count < MAX_SAVED_BLOCKS) {
-                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].x = x;
-                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].y = y;
-                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].z = z;
-                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].type = type;
-                    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[count].yaw = yaw;
+                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].x = x;
+                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].y = y;
+                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].z = z;
+                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].type = type;
+                    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[count].yaw = yaw;
                     count++;
                 }
             }
         }
     }
-    gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].count = count;
+    gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].count = count;
     gMainMenuDataModified = TRUE;
 }
 
 void load_saved_blocks(u8 fileIndex, u8 courseIndex) {
     memset(gPlacedObjectGridMap, 0, sizeof(gPlacedObjectGridMap));
-    u16 count = gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].count;
+    u16 count = gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].count;
     for (u16 i = 0; i < count; i++) {
-        struct SavedBlock *b = &gSaveBuffer.files[fileIndex]->courseBlocks[courseIndex].blocks[i];
+        struct SavedBlock *b = &gSaveBuffer.files[fileIndex][0].courseBlocks[courseIndex].blocks[i];
         gPlacedObjectGridMap[b->x][b->y][b->z].type = b->type;
         gPlacedObjectGridMap[b->x][b->y][b->z].yaw = b->yaw;
     }

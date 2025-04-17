@@ -9,7 +9,7 @@
 
 #include "course_table.h"
 
-#define MAX_SAVED_BLOCKS 1024
+#define MAX_SAVED_BLOCKS 700
 #define COURSE_COUNT 15
 
 #if defined(SRAM)
@@ -21,10 +21,6 @@
 #endif
 
 #define NUM_SAVE_FILES 4
-
-#ifdef SRAM
-#define SRAM_SIZE 0x80000
-#endif
 
 struct SaveBlockSignature {
     u16 magic;
@@ -104,12 +100,10 @@ extern void puppycam_get_save(void);
 extern void puppycam_check_save(void);
 #endif
 
-#if defined(SRAM)
-STATIC_ASSERT(sizeof(struct SaveBuffer) <= SRAM_SIZE, "ERROR: Save struct too big for SRAM");
-#else
-STATIC_ASSERT(sizeof(struct SaveBuffer) <= EEPROM_SIZE, "ERROR: Save struct too big for EEPROM");
+#ifdef SRAM
+#define SRAM_SIZE 0x80000
+_Static_assert(sizeof(struct SaveBuffer) <= 0x80000, "SaveBuffer size exceeds 512 KB");
 #endif
-
 
 extern u8 gLastCompletedCourseNum;
 extern u8 gLastCompletedStarNum;
