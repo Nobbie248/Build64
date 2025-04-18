@@ -34,29 +34,28 @@
 #include <string.h>
 #include "src/buffers/buffers.h"
 
-// this setup uses almost 400kb of ram while keeping things persistent over the game
-// saving to sram is possible with smaller setups but this will come later
+// this setup uses up to 300kb of ram while keeping things persistent over the game
+// saving to sram is possible but this will come later
 #define GRID_SIZE 300 // size of each block placement
 #define GRID_MAP_SIZE 64 // total size of grid in each stage
 #define MAX_LEVELS 32 // do not put less then 31 or it can crash
-#define MAX_PLACED_BLOCKS_PER_LEVEL 2028
+#define MAX_PLACED_BLOCKS_PER_LEVEL 2024
 #define MARKER_TYPE_COUNT 10 // preview object models
 #define BLOCK_TYPE_COUNT 10 // types of objects to place
 
 struct PlacedBlockInstance {
     u8 x, y, z;
-    u8 type;
-    s16 yaw;
+    u8 type, yaw;
 };
 
 static struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
-static s16 gPlacedBlockCounts[MAX_LEVELS];
+static u16 gPlacedBlockCounts[MAX_LEVELS];
 
 struct Object *marker = NULL;
-s8 gIsHotbar = FALSE;
+u8 gIsHotbar = FALSE;
 s16 gBlockRotationYaw = 0;
-s8 gSelectedBlockType = 0;
-s8 gSelectedMarkerType = 0;
+u8 gSelectedBlockType = 0;
+u8 gSelectedMarkerType = 0;
 u8 gIsMarkerActive = FALSE;
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
@@ -97,7 +96,7 @@ struct PlacedBlockInstance *find_placed_block(s32 level, u8 x, u8 y, u8 z) {
     return NULL;
 }
 
-void place_block(s32 level, u8 x, u8 y, u8 z, u8 type, s16 yaw) {
+void place_block(s32 level, u8 x, u8 y, u8 z, u8 type, u8 yaw) {
     struct PlacedBlockInstance *b = find_placed_block(level, x, y, z);
     if (b) {
         b->type = type;
@@ -174,7 +173,7 @@ void update_marker(struct MarioState *m) {
 // place object to grid
 void update_player_object_placement(struct MarioState *m) {
     if (gCurrLevelNum >= MAX_LEVELS) return; // ram safty :)
-    if (!gPlacedBlocks[gCurrLevelNum]) return; // more ram safty
+    if (!gPlacedBlocks[gCurrLevelNum]) return; // more safty
     if (!marker) return;
 
     s32 markerGridX = to_grid_index(marker->oPosX);
@@ -183,7 +182,7 @@ void update_player_object_placement(struct MarioState *m) {
 
     if (gPlayer1Controller->buttonPressed & L_TRIG) {
         if (!find_placed_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ)) {
-            place_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ, gSelectedBlockType + 1, gBlockRotationYaw);
+            place_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ, gSelectedBlockType + 1, (gBlockRotationYaw >> 14) & 0x03);
 
             s32 x = from_grid_index(markerGridX);
             s32 y = from_grid_index(markerGridY);
@@ -199,9 +198,9 @@ void update_player_object_placement(struct MarioState *m) {
         }
     }
 
-    if (gPlayer1Controller->buttonPressed & U_JPAD) { //rotate object
-        gBlockRotationYaw -= 0x4000;
-    }
+    if (gPlayer1Controller->buttonPressed & U_JPAD) {
+        gBlockRotationYaw = (gBlockRotationYaw - 0x4000) & 0xC000;
+    }    
 
     if (gPlayer1Controller->buttonPressed & R_JPAD) { // cycle hot bar right and left
         gSelectedBlockType = (gSelectedBlockType + 1) % BLOCK_TYPE_COUNT;
@@ -264,7 +263,7 @@ void load_objects_from_grid(void) {
                 BlockModels[b->type - 1],
                 BlockBehaviors[b->type - 1],
                 worldX, worldY, worldZ,
-                0, b->yaw, 0
+                0, b->yaw << 14, 0
             );
         }
     }
