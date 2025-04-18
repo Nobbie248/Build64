@@ -1570,13 +1570,6 @@ void render_pause_red_coins(void) {
     }
 }
 
-LangArray textsavebuild = DEFINE_LANGUAGE_ARRAY(
-    "PRESS RIGHT DPAD TO SAVE BUILD",
-    "",
-    "",
-    "",
-    "");
-
 LangArray textCurrRatio43 = DEFINE_LANGUAGE_ARRAY(
     "ASPECT RATIO: 4:3\nPRESS L TO SWITCH",
     "RATIO D'ASPECT: 4:3\nAPPUYEZ SUR L POUR CHANGER",
@@ -1598,7 +1591,6 @@ static const char pressBToHacktice[] = "PRESS B TO ENABLE HACKTICE";
 void render_widescreen_setting(void) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     set_text_color(255, 255, 255);
-    print_generic_string(200, 24, LANG_ARRAY(textsavebuild));
     if (!gConfig.widescreen) {
         print_generic_string(10, 24, LANG_ARRAY(textCurrRatio43));
     } else {
@@ -1608,15 +1600,6 @@ void render_widescreen_setting(void) {
     if (gPlayer1Controller->buttonPressed & L_TRIG){
         gConfig.widescreen ^= 1;
         save_file_set_widescreen_mode(gConfig.widescreen);
-    }
-    if (gPlayer1Controller->buttonPressed & R_JPAD){
-        save_placed_blocks(gCurrSaveFileNum, gCurrCourseNum - 1);
-        save_file_do_save(gCurrSaveFileNum - 1);
-        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
-    }
-    if (gPlayer1Controller->buttonPressed & L_JPAD){
-        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
-        load_saved_blocks(gCurrSaveFileNum, gCurrCourseNum - 1);
     }
 }
 #endif

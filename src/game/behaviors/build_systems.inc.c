@@ -33,7 +33,6 @@
 #include "src/game/hud.h"
 #include <string.h>
 #include "src/buffers/buffers.h"
-#include "src/game/build_systems.h"
 
 static struct Object *marker = NULL;
 s8 gIsHotbar = FALSE;
@@ -46,6 +45,11 @@ u8 gIsMarkerActive = FALSE;
 #define GRID_MAP_SIZE 64 // size of world grid
 #define MARKER_TYPE_COUNT 10
 #define BLOCK_TYPE_COUNT 10
+
+struct PlacedBlock {
+    u8 type;
+    s16 yaw;
+};
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
     MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER,
@@ -146,10 +150,6 @@ void update_player_object_placement(struct MarioState *m) {
                 0, gBlockRotationYaw, 0
             );
         }
-    }
-
-    if (gPlayer1Controller->buttonPressed & D_JPAD) {
-        gBlockRotationYaw += 0x4000;
     }
     if (gPlayer1Controller->buttonPressed & U_JPAD) {
         gBlockRotationYaw -= 0x4000;

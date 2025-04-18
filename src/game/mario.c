@@ -1873,7 +1873,6 @@ void init_mario(void) {
 }
 
 void init_mario_from_save_file(void) {
-    load_saved_blocks(gCurrSaveFileNum, gCurrCourseNum - 1);
     gMarioState->playerID = 0;
     gMarioState->flags = MARIO_NONE;
     gMarioState->action = ACT_UNINITIALIZED;

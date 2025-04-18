@@ -6,13 +6,8 @@
 #include "types.h"
 #include "area.h"
 #include "puppycam2.h"
-#include "src/game/build_systems.h"
 
 #include "course_table.h"
-
-#define MAX_SAVED_BLOCKS 70
-
-#define COURSE_COUNT 15
 
 #if defined(SRAM)
     #define EEPROM_SIZE 0x8000
@@ -27,17 +22,6 @@
 struct SaveBlockSignature {
     u16 magic;
     u16 chksum;
-};
-
-struct SavedBlock {
-    s8 x, y, z;
-    u8 type;
-    s16 yaw;
-};
-
-struct SavedCourseBlocks {
-    struct SavedBlock blocks[MAX_SAVED_BLOCKS];
-    u16 count;
 };
 
 struct SaveFile {
@@ -56,7 +40,6 @@ struct SaveFile {
     // The most significant bit of the byte *following* each course is set if the
     // cannon is open.
     u8 courseStars[COURSE_COUNT]; // 200 bits
-    struct SavedCourseBlocks courseBlocks[COURSE_COUNT];
     u8 courseCoinScores[COURSE_STAGES_COUNT]; // 120 bits
 
     struct SaveBlockSignature signature; // 32 bits
@@ -208,9 +191,6 @@ void save_file_move_cap_to_default_location(void);
 void disable_warp_checkpoint(void);
 void check_if_should_set_warp_checkpoint(struct WarpNode *warpNode);
 s32 check_warp_checkpoint(struct WarpNode *warpNode);
-
-void save_placed_blocks(u8 fileIndex, u8 courseIndex);
-void load_saved_blocks(u8 fileIndex, u8 courseIndex);
 
 #ifdef MULTILANG
 void multilang_set_language(u32 language);
