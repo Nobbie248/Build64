@@ -34,10 +34,12 @@
 #include <string.h>
 #include "src/buffers/buffers.h"
 
+// this setup uses almost 400kb of ram while keeping things persistent over the game
+// saving to sram is possible with smaller setups but this will come later
 #define GRID_SIZE 300 // size of each block placement
 #define GRID_MAP_SIZE 64 // total size of grid in each stage
-#define MAX_LEVELS 15
-#define MAX_PLACED_BLOCKS_PER_LEVEL 4096
+#define MAX_LEVELS 32 // do not put less then 31 or it can crash
+#define MAX_PLACED_BLOCKS_PER_LEVEL 2028
 #define MARKER_TYPE_COUNT 10 // preview object models
 #define BLOCK_TYPE_COUNT 10 // types of objects to place
 
@@ -171,6 +173,8 @@ void update_marker(struct MarioState *m) {
 
 // place object to grid
 void update_player_object_placement(struct MarioState *m) {
+    if (gCurrLevelNum >= MAX_LEVELS) return; // ram safty :)
+    if (!gPlacedBlocks[gCurrLevelNum]) return; // more ram safty
     if (!marker) return;
 
     s32 markerGridX = to_grid_index(marker->oPosX);
