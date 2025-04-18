@@ -19,6 +19,7 @@
 #include "sram.h"
 #endif
 #include "puppycam2.h"
+#include "src/game/build_systems.h"
 
 #ifdef UNIQUE_SAVE_DATA
 u16 MENU_DATA_MAGIC = 0x4849;
@@ -814,4 +815,42 @@ s32 check_warp_checkpoint(struct WarpNode *warpNode) {
     }
 
     return warpCheckpointActive;
+}
+
+void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
+    struct SavedCourseBlocks *blocks = &gSaveBuffer.files[fileIndex][fileIndex].courseBlocks[courseIndex];
+    blocks->count = 0;
+
+    for (s32 x = 0; x < GRID_MAP_SIZE; x++) {
+        for (s32 y = 0; y < GRID_MAP_SIZE; y++) {
+            for (s32 z = 0; z < GRID_MAP_SIZE; z++) {
+                u8 type = gPlacedObjectGridMap[x][y][z].type;
+                s16 yaw = gPlacedObjectGridMap[x][y][z].yaw;
+
+                if (type != 0 && blocks->count < MAX_SAVED_BLOCKS) {
+                    struct SavedBlock *b = &blocks->blocks[blocks->count++];
+                    b->x = x;
+                    b->y = y;
+                    b->z = z;
+                    b->type = type;
+                    b->yaw = yaw;
+                }
+            }
+        }
+    }
+
+    gMainMenuDataModified = TRUE;
+}
+
+void load_saved_blocks(u8 fileIndex, u8 courseIndex) {
+    memset(gPlacedObjectGridMap, 0, sizeof(gPlacedObjectGridMap));
+
+    struct SaveFile *saveFile = &gSaveBuffer.files[fileIndex][0];
+    struct SavedCourseBlocks *courseData = &saveFile->courseBlocks[courseIndex];
+
+    for (u16 i = 0; i < courseData->count; i++) {
+        struct SavedBlock *b = &courseData->blocks[i];
+        gPlacedObjectGridMap[b->x][b->y][b->z].type = b->type;
+        gPlacedObjectGridMap[b->x][b->y][b->z].yaw = b->yaw;
+    }
 }

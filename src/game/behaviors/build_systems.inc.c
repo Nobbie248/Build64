@@ -32,6 +32,8 @@
 #include "src/game/rumble_init.h"
 #include "src/game/hud.h"
 #include <string.h>
+#include "src/buffers/buffers.h"
+#include "src/game/build_systems.h"
 
 static struct Object *marker = NULL;
 s8 gIsHotbar = FALSE;
@@ -63,11 +65,6 @@ static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
 static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
     bhvBlock, bhvBlock2, bhvBlock, bhvBlock, bhvBlock,
     bhvBlock, bhvBlock, bhvBlock, bhvBlock, bhvBlock
-};
-
-struct PlacedBlock {
-    u8 type;
-    s16 yaw;
 };
 
 struct PlacedBlock gPlacedObjectGridMap[GRID_MAP_SIZE][GRID_MAP_SIZE][GRID_MAP_SIZE];
@@ -257,42 +254,5 @@ void load_objects_from_grid(void) {
                 }
             }
         }
-    }
-}
-
-void save_placed_blocks(u8 fileIndex, u8 courseIndex) {
-    struct SavedCourseBlocks *blocks = &gSaveBuffer.files[fileIndex][fileIndex].courseBlocks[courseIndex];
-    blocks->count = 0;
-
-    for (s32 x = 0; x < GRID_MAP_SIZE; x++) {
-        for (s32 y = 0; y < GRID_MAP_SIZE; y++) {
-            for (s32 z = 0; z < GRID_MAP_SIZE; z++) {
-                u8 type = gPlacedObjectGridMap[x][y][z].type;
-                s16 yaw = gPlacedObjectGridMap[x][y][z].yaw;
-
-                if (type != 0 && blocks->count < MAX_SAVED_BLOCKS) {
-                    struct SavedBlock *b = &blocks->blocks[blocks->count++];
-                    b->x = x;
-                    b->y = y;
-                    b->z = z;
-                    b->type = type;
-                    b->yaw = yaw;
-                }
-            }
-        }
-    }
-
-    gMainMenuDataModified = TRUE;
-}
-
-void load_saved_blocks(u8 fileIndex, u8 courseIndex) {
-    struct SavedCourseBlocks *blocks = &gSaveBuffer.files[fileIndex][fileIndex].courseBlocks[courseIndex];
-
-    memset(gPlacedObjectGridMap, 0, sizeof(gPlacedObjectGridMap));
-
-    for (u16 i = 0; i < blocks->count; i++) {
-        struct SavedBlock *b = &blocks->blocks[i];
-        gPlacedObjectGridMap[b->x][b->y][b->z].type = b->type;
-        gPlacedObjectGridMap[b->x][b->y][b->z].yaw = b->yaw;
     }
 }

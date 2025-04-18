@@ -6,6 +6,7 @@
 #include "types.h"
 #include "area.h"
 #include "puppycam2.h"
+#include "src/game/build_systems.h"
 
 #include "course_table.h"
 
@@ -216,7 +217,5 @@ void multilang_set_language(u32 language);
 u32 multilang_get_language(void);
 u32 get_language_index(u32 language);
 #endif
-
-extern struct SaveBuffer gSaveBuffer;
 
 #endif // SAVE_FILE_H
