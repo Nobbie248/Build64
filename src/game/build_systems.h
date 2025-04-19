@@ -8,7 +8,7 @@
 #define GRID_SIZE 300 // size of each block placement
 #define GRID_MAP_SIZE 64 // total size of grid in each stage
 #define MAX_LEVELS 32 // do not put less then 31 or it can crash
-#define MAX_PLACED_BLOCKS_PER_LEVEL 1024
+#define MAX_PLACED_BLOCKS_PER_LEVEL 50
 #define MARKER_TYPE_COUNT 10 // preview object models
 #define BLOCK_TYPE_COUNT 10 // types of objects to place
 
@@ -17,7 +17,7 @@ struct PlacedBlockInstance {
     type: 5, yaw: 2;
 };
 
-static struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
-static u16 gPlacedBlockCounts[MAX_LEVELS];
+extern struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
+extern u16 gPlacedBlockCounts[MAX_LEVELS];
 
 #endif // BUILD_SYSTEMS_H

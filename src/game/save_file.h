@@ -8,6 +8,7 @@
 #include "puppycam2.h"
 
 #include "course_table.h"
+#include "src/game/build_systems.h"
 
 #if defined(SRAM)
     #define EEPROM_SIZE 0x8000
@@ -17,7 +18,7 @@
     #define EEPROM_SIZE 0x200
 #endif
 
-#define NUM_SAVE_FILES 4
+#define NUM_SAVE_FILES 1
 
 struct SaveBlockSignature {
     u16 magic;
@@ -43,6 +44,8 @@ struct SaveFile {
     u8 courseCoinScores[COURSE_STAGES_COUNT]; // 120 bits
 
     struct SaveBlockSignature signature; // 32 bits
+    struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
+    u16 gPlacedBlockCounts[MAX_LEVELS];
 };
 
 enum SaveFileIndex {

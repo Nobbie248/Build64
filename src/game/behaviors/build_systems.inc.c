@@ -15,6 +15,9 @@
 #include "src/buffers/buffers.h"
 #include "src/game/build_systems.h"
 
+struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
+u16 gPlacedBlockCounts[MAX_LEVELS];
+
 struct Object *marker = NULL;
 u8 gIsHotbar = FALSE;
 s16 gBlockRotationYaw = 0;
@@ -220,7 +223,6 @@ void load_objects_from_grid(void) {
                 break;
             }
         }
-
         if (!exists) {
             spawn_object_abs_with_rot(
                 gMarioObject, 0,
