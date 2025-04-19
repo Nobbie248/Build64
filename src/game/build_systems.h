@@ -20,4 +20,7 @@ struct PlacedBlockInstance {
 extern struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
 extern u16 gPlacedBlockCounts[MAX_LEVELS];
 
+extern u8 gIsHotbar;
+extern u8 gIsBlockType[BLOCK_TYPE_COUNT];
+
 #endif // BUILD_SYSTEMS_H

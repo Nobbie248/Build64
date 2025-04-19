@@ -45,6 +45,4 @@ enum CameraHUDLUT {
 void set_hud_camera_status(s16 status);
 void render_hud(void);
 
-extern u8 gIsHotbar;
-
 #endif // HUD_H

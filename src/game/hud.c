@@ -633,8 +633,38 @@ void render_hot_bar(void) {
 
     gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx),
               G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
+if (gIsHotbar == TRUE && gIsBlockType[0]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar_hotbar_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[1]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar2_hotbar_001_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[2]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar3_hotbar_002_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[3]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar4_hotbar_003_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[4]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar5_hotbar_004_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[5]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar6_hotbar_005_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[6]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar7_hotbar_006_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[7]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar8_hotbar_007_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[8]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar9_hotbar_008_mesh);
+}
+if (gIsHotbar == TRUE && gIsBlockType[9]) {
+                gSPDisplayList(gDisplayListHead++, &hotbar10_hotbar_009_mesh);
+}
 if (gIsHotbar == TRUE) {
-    gSPDisplayList(gDisplayListHead++, &hotbar_hotbar_mesh);
+    gSPDisplayList(gDisplayListHead++, &hotbarinside_hotbarinside_mesh);
 }
     gSPPopMatrix(gDisplayListHead++, G_MTX_PROJECTION);
 }

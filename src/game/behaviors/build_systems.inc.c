@@ -19,11 +19,12 @@ struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL
 u16 gPlacedBlockCounts[MAX_LEVELS];
 
 struct Object *marker = NULL;
-u8 gIsHotbar = FALSE;
 s16 gBlockRotationYaw = 0;
 u8 gSelectedBlockType = 0;
 u8 gSelectedMarkerType = 0;
 u8 gIsMarkerActive = FALSE;
+u8 gIsBlockType[BLOCK_TYPE_COUNT] = { 0 };
+u8 gIsHotbar;
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
     MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER,
@@ -88,6 +89,14 @@ void remove_block(s32 level, u8 x, u8 y, u8 z) {
     }
 }
 
+// just flag for ui
+void update_selected_block_flags(void) {
+    for (int i = 0; i < BLOCK_TYPE_COUNT; i++) {
+        gIsBlockType[i] = FALSE;
+    }
+    gIsBlockType[gSelectedBlockType] = TRUE;
+}
+
 void bhv_marker_loop(void) { // not in use yet
     o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 }
@@ -110,6 +119,7 @@ void update_marker(struct MarioState *m) {
         marker = spawn_object(m->marioObj, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);
         gIsHotbar = TRUE;
         gIsMarkerActive = TRUE;
+        update_selected_block_flags();
     }
 
     if (marker != NULL) {
@@ -172,6 +182,7 @@ void update_player_object_placement(struct MarioState *m) {
     if (gPlayer1Controller->buttonPressed & R_JPAD) { // cycle hot bar right and left
         gSelectedBlockType = (gSelectedBlockType + 1) % BLOCK_TYPE_COUNT;
         gSelectedMarkerType = (gSelectedMarkerType + 1) % MARKER_TYPE_COUNT;
+        update_selected_block_flags();
         if (marker) {
             obj_mark_for_deletion(marker);
             marker = spawn_object(gMarioObject, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);
@@ -181,6 +192,7 @@ void update_player_object_placement(struct MarioState *m) {
     if (gPlayer1Controller->buttonPressed & L_JPAD) {
         gSelectedBlockType = (gSelectedBlockType - 1 + BLOCK_TYPE_COUNT) % BLOCK_TYPE_COUNT;
         gSelectedMarkerType = (gSelectedMarkerType - 1 + MARKER_TYPE_COUNT) % MARKER_TYPE_COUNT;
+        update_selected_block_flags();
         if (marker) {
             obj_mark_for_deletion(marker);
             marker = spawn_object(gMarioObject, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);

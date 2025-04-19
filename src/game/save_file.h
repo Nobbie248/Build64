@@ -10,8 +10,8 @@
 #include "course_table.h"
 #include "src/game/build_systems.h"
 
-#if defined(SRAM)
-    #define EEPROM_SIZE 0x8000
+#if defined(SRAM) // 256kb
+    #define EEPROM_SIZE 0x40000
 #elif defined(EEP16K)
     #define EEPROM_SIZE 0x800
 #else

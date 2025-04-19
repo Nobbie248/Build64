@@ -1,5 +1,5 @@
-Gfx hotbar_hotbar_ia8_aligner[] = {gsSPEndDisplayList()};
-u8 hotbar_hotbar_ia8[] = {
+Gfx hotbar5_hotbar_ia8_aligner[] = {gsSPEndDisplayList()};
+u8 hotbar5_hotbar_ia8[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -131,31 +131,31 @@ u8 hotbar_hotbar_ia8[] = {
 	
 };
 
-Vtx hotbar_hotbar_mesh_vtx_cull[8] = {
-	{{ {7, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {7, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {7, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {7, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {34, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {34, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {34, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {34, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+Vtx hotbar5_hotbar_004_mesh_vtx_cull[8] = {
+	{{ {106, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {106, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {106, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {106, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {131, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {131, 201, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {131, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {131, 225, 0}, 0, {0, 0}, {0, 0, 0, 0} }},
 };
 
-Vtx hotbar_hotbar_mesh_vtx_0[4] = {
-	{{ {7, 201, 0}, 0, {-4220, 1024}, {0, 0, 127, 255} }},
-	{{ {34, 201, 0}, 0, {-3087, 1024}, {0, 0, 127, 255} }},
-	{{ {34, 225, 0}, 0, {-3087, 0}, {0, 0, 127, 255} }},
-	{{ {7, 225, 0}, 0, {-4220, 0}, {0, 0, 127, 255} }},
+Vtx hotbar5_hotbar_004_mesh_vtx_0[4] = {
+	{{ {106, 225, 0}, 0, {-19, 0}, {0, 0, 127, 255} }},
+	{{ {106, 201, 0}, 0, {-19, 1024}, {0, 0, 127, 255} }},
+	{{ {131, 201, 0}, 0, {1036, 1024}, {0, 0, 127, 255} }},
+	{{ {131, 225, 0}, 0, {1036, 0}, {0, 0, 127, 255} }},
 };
 
-Gfx hotbar_hotbar_mesh_tri_0[] = {
-	gsSPVertex(hotbar_hotbar_mesh_vtx_0 + 0, 4, 0),
+Gfx hotbar5_hotbar_004_mesh_tri_0[] = {
+	gsSPVertex(hotbar5_hotbar_004_mesh_vtx_0 + 0, 4, 0),
 	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
 	gsSPEndDisplayList(),
 };
 
-Gfx mat_hotbar_f3dlite_material_layer1[] = {
+Gfx mat_hotbar5_f3dlite_material_layer1[] = {
 	gsSPGeometryMode(G_CULL_BACK, 0),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0),
@@ -163,7 +163,7 @@ Gfx mat_hotbar_f3dlite_material_layer1[] = {
 	gsDPSetTextureFilter(G_TF_POINT),
 	gsDPSetRenderMode(GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM) | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM), AA_EN | CVG_DST_CLAMP | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_8b_LOAD_BLOCK, 1, hotbar_hotbar_ia8),
+	gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_8b_LOAD_BLOCK, 1, hotbar5_hotbar_ia8),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_8b_LOAD_BLOCK, 0, 0, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0),
 	gsDPLoadBlock(7, 0, 0, 511, 512),
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
@@ -171,7 +171,7 @@ Gfx mat_hotbar_f3dlite_material_layer1[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx mat_revert_hotbar_f3dlite_material_layer1[] = {
+Gfx mat_revert_hotbar5_f3dlite_material_layer1[] = {
 	gsSPGeometryMode(0, G_CULL_BACK),
 	gsDPPipeSync(),
 	gsDPSetAlphaDither(G_AD_DISABLE),
@@ -180,14 +180,14 @@ Gfx mat_revert_hotbar_f3dlite_material_layer1[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx hotbar_hotbar_mesh[] = {
+Gfx hotbar5_hotbar_004_mesh[] = {
 	gsSPClearGeometryMode(G_LIGHTING),
-	gsSPVertex(hotbar_hotbar_mesh_vtx_cull + 0, 8, 0),
+	gsSPVertex(hotbar5_hotbar_004_mesh_vtx_cull + 0, 8, 0),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPCullDisplayList(0, 7),
-	gsSPDisplayList(mat_hotbar_f3dlite_material_layer1),
-	gsSPDisplayList(hotbar_hotbar_mesh_tri_0),
-	gsSPDisplayList(mat_revert_hotbar_f3dlite_material_layer1),
+	gsSPDisplayList(mat_hotbar5_f3dlite_material_layer1),
+	gsSPDisplayList(hotbar5_hotbar_004_mesh_tri_0),
+	gsSPDisplayList(mat_revert_hotbar5_f3dlite_material_layer1),
 	gsDPPipeSync(),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPClearGeometryMode(G_TEXTURE_GEN),
