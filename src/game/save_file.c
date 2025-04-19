@@ -19,6 +19,7 @@
 #include "sram.h"
 #endif
 #include "puppycam2.h"
+#include "src/game/build_systems.h"
 
 #ifdef UNIQUE_SAVE_DATA
 u16 MENU_DATA_MAGIC = 0x4849;

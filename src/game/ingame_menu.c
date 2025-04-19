@@ -1601,9 +1601,9 @@ void render_widescreen_setting(void) {
         gConfig.widescreen ^= 1;
         save_file_set_widescreen_mode(gConfig.widescreen);
     }
-    if (gPlayer1Controller->buttonPressed & R_JPAD){
-        save_file_do_save(gCurrSaveFileNum - 1);    
-    }
+    // if (gPlayer1Controller->buttonPressed & R_JPAD){
+    //     save_file_do_save(gCurrSaveFileNum - 1);    
+    // }
 }
 #endif
 
