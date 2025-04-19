@@ -1576,14 +1576,15 @@ s32 act_squished(struct MarioState *m) {
         }
     }
 
-    // squished for more than 10 seconds, so kill Mario
-    if (m->actionArg++ > 300) {
-        // 0 units of health
-        m->health = 0x00FF;
-        m->hurtCounter = 0;
-        level_trigger_warp(m, WARP_OP_DEATH);
-        // woosh, he's gone!
-        set_mario_action(m, ACT_DISAPPEARED, 0);
+    // squished for more than 3 seconds then push out
+    if (m->actionArg++ > 100) {
+        s16 angle = random_u16(); // if it pushes out of bounds the next will be another direction
+        m->pos[0] += 400.0f * sins(angle);
+        m->pos[2] += 400.0f * coss(angle);
+        m->pos[1] += 20.0f;
+        m->squishTimer = 0;
+        m->actionArg = 0;
+        set_mario_action(m, ACT_IDLE, 0);
     }
     stop_and_set_height_to_floor(m);
     set_mario_animation(m, MARIO_ANIM_A_POSE);
