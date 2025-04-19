@@ -13,8 +13,8 @@
 #define BLOCK_TYPE_COUNT 10 // types of objects to place
 
 struct PlacedBlockInstance {
-    u32 x:6 , y: 6, z: 6;
-    u32 type: 5, yaw: 2;
+    u32 x:6 , y: 6, z: 6,
+    type: 5, yaw: 2;
 };
 
 static struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
