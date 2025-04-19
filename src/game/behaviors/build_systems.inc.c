@@ -34,18 +34,18 @@
 #include <string.h>
 #include "src/buffers/buffers.h"
 
-// this setup uses up to 300kb of ram while keeping things persistent over the game
+// this setup uses up to 130kb of ram while keeping things persistent over the game
 // saving to sram is possible but this will come later
 #define GRID_SIZE 300 // size of each block placement
 #define GRID_MAP_SIZE 64 // total size of grid in each stage
 #define MAX_LEVELS 32 // do not put less then 31 or it can crash
-#define MAX_PLACED_BLOCKS_PER_LEVEL 2024
+#define MAX_PLACED_BLOCKS_PER_LEVEL 1024
 #define MARKER_TYPE_COUNT 10 // preview object models
 #define BLOCK_TYPE_COUNT 10 // types of objects to place
 
 struct PlacedBlockInstance {
-    u8 x, y, z;
-    u8 type, yaw;
+    u32 x:6 , y: 6, z: 6;
+    u32 type: 5, yaw: 2;
 };
 
 static struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
