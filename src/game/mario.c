@@ -1663,6 +1663,7 @@ void mario_update_hitbox_and_cap_model(struct MarioState *m) {
     }
     update_player_object_placement(m);
     update_marker(m);
+    spawn_random_blocks(m);
 }
 
 /**

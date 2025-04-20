@@ -6,6 +6,8 @@
 
 #include "types.h"
 
+extern u32 gFileSelectTimer;
+
 enum MenuLayers {
     MENU_LAYER_NONE,
     MENU_LAYER_MAIN,

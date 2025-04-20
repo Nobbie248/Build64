@@ -14,6 +14,9 @@
 #include "src/game/save_file.h"
 #include "src/buffers/buffers.h"
 #include "src/game/build_systems.h"
+#include "src/game/save_file.h"
+
+extern u32 gForrandomTimer __attribute__((section(".bss")));
 
 struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
 u16 gPlacedBlockCounts[MAX_LEVELS];
@@ -149,8 +152,15 @@ void update_marker(struct MarioState *m) {
 
 // place object to grid
 void update_player_object_placement(struct MarioState *m) {
+    static s32 blockLimitTextTimer = 0;
+
     if (gCurrLevelNum >= MAX_LEVELS) return; // safty :)
     if (!marker) return;
+
+    if (blockLimitTextTimer > 0) {
+        print_text(15, 40, "MAX COURSE BLOCKS REACHED");
+        blockLimitTextTimer--;
+    }
 
     s32 markerGridX = to_grid_index(marker->oPosX);
     s32 markerGridY = to_grid_index(marker->oPosY);
@@ -158,7 +168,7 @@ void update_player_object_placement(struct MarioState *m) {
 
     if (gPlayer1Controller->buttonPressed & L_TRIG) {
         if (gPlacedBlockCounts[gCurrLevelNum] >= MAX_PLACED_BLOCKS_PER_LEVEL) {
-            print_text_centered(160, 40, "MAX COURSE BLOCKS REACHED");
+            blockLimitTextTimer = 40;
             return;
         }
         if (!find_placed_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ)) {
@@ -182,7 +192,7 @@ void update_player_object_placement(struct MarioState *m) {
         gBlockRotationYaw = (gBlockRotationYaw - 0x4000) & 0xC000;
     }    
 
-    if (gPlayer1Controller->buttonPressed & R_JPAD) { // cycle hot bar right and left
+    if (gPlayer1Controller->buttonPressed & R_JPAD) {
         gSelectedBlockType = (gSelectedBlockType + 1) % BLOCK_TYPE_COUNT;
         gSelectedMarkerType = (gSelectedMarkerType + 1) % MARKER_TYPE_COUNT;
         update_selected_block_flags();
@@ -247,5 +257,52 @@ void load_objects_from_grid(void) {
                 0, b->yaw << 14, 0
             );
         }
+    }
+}
+
+// used for load limits and testing
+void spawn_random_blocks(void) {
+    static s16 lastLevel = -1;
+    static u8 hasSpawned = FALSE;
+
+    if (gCurrLevelNum != lastLevel) {
+        lastLevel = gCurrLevelNum;
+        hasSpawned = FALSE;
+    }
+
+    if (!gMarioState || !gMarioState->marioObj) return;
+
+    if (hasSpawned || gCurrLevelNum >= MAX_LEVELS) return;
+    hasSpawned = TRUE;
+
+    // Use file select timer as part of RNG entropy
+    u16 entropy_seed = (u16)(gForrandomTimer ^ 0xA5A5);
+
+    s32 attempts = 0;
+    while (gPlacedBlockCounts[gCurrLevelNum] < 256 && attempts < 256) {
+        attempts++;
+
+        u8 x = ((random_u16() ^ entropy_seed) + attempts) % GRID_MAP_SIZE;
+        u8 y = ((random_u16() ^ (entropy_seed >> 3)) + attempts) % GRID_MAP_SIZE;
+        u8 z = ((random_u16() ^ (entropy_seed >> 5)) + attempts) % GRID_MAP_SIZE;
+
+        if (find_placed_block(gCurrLevelNum, x, y, z)) continue;
+
+        u8 type = (random_u16() ^ (entropy_seed >> 2)) % BLOCK_TYPE_COUNT;
+        u8 yaw = (random_u16() + entropy_seed) % 4;
+
+        place_block(gCurrLevelNum, x, y, z, type + 1, yaw);
+
+        s32 wx = from_grid_index(x);
+        s32 wy = from_grid_index(y);
+        s32 wz = from_grid_index(z);
+
+        spawn_object_abs_with_rot(
+            gMarioObject, 0,
+            BlockModels[type],
+            BlockBehaviors[type],
+            wx, wy, wz,
+            0, yaw << 14, 0
+        );
     }
 }
