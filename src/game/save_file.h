@@ -25,6 +25,10 @@ struct SaveBlockSignature {
     u16 chksum;
 };
 
+#define MAX_LEVELS 32
+#define MAX_PLACED_BLOCKS_PER_LEVEL 10
+extern struct SaveBlockPlacementData blockPlacementData;
+
 struct SaveFile {
     // Location of lost cap.
     // Note: the coordinates get set, but are never actually used, since the
@@ -42,8 +46,10 @@ struct SaveFile {
     // cannon is open.
     u8 courseStars[COURSE_COUNT]; // 200 bits
     u8 courseCoinScores[COURSE_STAGES_COUNT]; // 120 bits
-
+    
     struct SaveBlockSignature signature; // 32 bits
+
+    struct SaveBlockPlacementData blockPlacementData;
 };
 
 enum SaveFileIndex {
@@ -192,6 +198,9 @@ void save_file_move_cap_to_default_location(void);
 void disable_warp_checkpoint(void);
 void check_if_should_set_warp_checkpoint(struct WarpNode *warpNode);
 s32 check_warp_checkpoint(struct WarpNode *warpNode);
+
+void copy_blocks_to_save(void);
+void copy_blocks_from_save(void);
 
 #ifdef MULTILANG
 void multilang_set_language(u32 language);

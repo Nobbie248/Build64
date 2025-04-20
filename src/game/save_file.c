@@ -315,7 +315,7 @@ void save_file_do_save(s32 fileIndex) {
 
         // Write to EEPROM
         write_eeprom_data(&gSaveBuffer.files[fileIndex], sizeof(gSaveBuffer.files[fileIndex]));
-
+        copy_blocks_to_save();
         gSaveFileModified = FALSE;
     }
 
@@ -815,4 +815,21 @@ s32 check_warp_checkpoint(struct WarpNode *warpNode) {
     }
 
     return warpCheckpointActive;
+}
+void copy_blocks_to_save(void) {
+    for (int lvl = 0; lvl < MAX_LEVELS; lvl++) {
+        gSaveBuffer.files[0]->blockPlacementData.placedBlockCounts[lvl] = gPlacedBlockCounts[lvl];
+        for (int i = 0; i < gPlacedBlockCounts[lvl]; i++) {
+            gSaveBuffer.files[0]->blockPlacementData.placedBlocks[lvl][i] = gPlacedBlocks[lvl][i];
+        }
+    }
+}
+
+void copy_blocks_from_save(void) {
+    for (int lvl = 0; lvl < MAX_LEVELS; lvl++) {
+        gPlacedBlockCounts[lvl] = gSaveBuffer.files[0]->blockPlacementData.placedBlockCounts[lvl];
+        for (int i = 0; i < gPlacedBlockCounts[lvl]; i++) {
+            gPlacedBlocks[lvl][i] = gSaveBuffer.files[0]->blockPlacementData.placedBlocks[lvl][i];
+        }
+    }
 }
