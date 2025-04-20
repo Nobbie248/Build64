@@ -149,8 +149,7 @@ void update_marker(struct MarioState *m) {
 
 // place object to grid
 void update_player_object_placement(struct MarioState *m) {
-    if (gCurrLevelNum >= MAX_LEVELS) return; // ram safty :)
-    if (!gPlacedBlocks[gCurrLevelNum]) return; // more safty
+    if (gCurrLevelNum >= MAX_LEVELS) return; // safty :)
     if (!marker) return;
 
     s32 markerGridX = to_grid_index(marker->oPosX);
@@ -158,6 +157,10 @@ void update_player_object_placement(struct MarioState *m) {
     s32 markerGridZ = to_grid_index(marker->oPosZ);
 
     if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        if (gPlacedBlockCounts[gCurrLevelNum] >= MAX_PLACED_BLOCKS_PER_LEVEL) {
+            print_text_centered(160, 40, "MAX COURSE BLOCKS REACHED");
+            return;
+        }
         if (!find_placed_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ)) {
             place_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ, gSelectedBlockType + 1, (gBlockRotationYaw >> 14) & 0x03);
 
