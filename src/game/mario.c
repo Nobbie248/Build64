@@ -1663,7 +1663,7 @@ void mario_update_hitbox_and_cap_model(struct MarioState *m) {
     }
     update_player_object_placement(m);
     update_marker(m);
-    spawn_random_blocks(m);
+    //spawn_random_blocks(m);
 }
 
 /**
@@ -1803,6 +1803,8 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
  **************************************************/
 
 void init_mario(void) {
+    gIsHotbar = FALSE;
+    gIsMarkerActive = FALSE;
     load_objects_from_grid();
     gMarioState->actionTimer = 0;
     gMarioState->framesSinceA = 0xFF;

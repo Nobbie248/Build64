@@ -15,12 +15,12 @@
 #include "src/buffers/buffers.h"
 #include "src/game/build_systems.h"
 #include "src/game/save_file.h"
-
-extern u32 gForrandomTimer __attribute__((section(".bss")));
+#include "src/game/ingame_menu.h"
 
 struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
 u16 gPlacedBlockCounts[MAX_LEVELS];
 
+extern u32 gForrandomTimer __attribute__((section(".bss")));
 struct Object *marker = NULL;
 s16 gBlockRotationYaw = 0;
 u8 gSelectedBlockType = 0;
@@ -263,23 +263,25 @@ void load_objects_from_grid(void) {
 // used for load limits and testing
 void spawn_random_blocks(void) {
     static s16 lastLevel = -1;
-    static u8 hasSpawned = FALSE;
+    static u8 isSpawning = FALSE;
+    static s32 totalSpawned = 0;
+    static u16 entropy_seed = 0;
+    static s32 attempts = 0;
 
     if (gCurrLevelNum != lastLevel) {
         lastLevel = gCurrLevelNum;
-        hasSpawned = FALSE;
+        isSpawning = TRUE;
+        totalSpawned = 0;
+        attempts = 0;
+        entropy_seed = (u16)(gForrandomTimer ^ 0xA5A5);
     }
 
-    if (!gMarioState || !gMarioState->marioObj) return;
+    if (!gMarioState || !gMarioState->marioObj || gCurrLevelNum >= MAX_LEVELS) return;
 
-    if (hasSpawned || gCurrLevelNum >= MAX_LEVELS) return;
-    hasSpawned = TRUE;
+    if (!isSpawning) return;
 
-    // Use file select timer as part of RNG entropy
-    u16 entropy_seed = (u16)(gForrandomTimer ^ 0xA5A5);
-
-    s32 attempts = 0;
-    while (gPlacedBlockCounts[gCurrLevelNum] < 256 && attempts < 256) {
+    s32 blocksThisFrame = 0;
+    while (blocksThisFrame < 32 && totalSpawned < 512 && gPlacedBlockCounts[gCurrLevelNum] < MAX_PLACED_BLOCKS_PER_LEVEL && attempts < 1024) {
         attempts++;
 
         u8 x = ((random_u16() ^ entropy_seed) + attempts) % GRID_MAP_SIZE;
@@ -304,5 +306,12 @@ void spawn_random_blocks(void) {
             wx, wy, wz,
             0, yaw << 14, 0
         );
+
+        blocksThisFrame++;
+        totalSpawned++;
+    }
+
+    if (totalSpawned >= 1024 || gPlacedBlockCounts[gCurrLevelNum] >= MAX_PLACED_BLOCKS_PER_LEVEL) {
+        isSpawning = FALSE;
     }
 }

@@ -26,6 +26,7 @@
 #include "main.h"
 
 #include "hacktice/main.h"
+#include "src/game/build_systems.h"
 
 #define STARS_TO_ENABLE_HACKTICE 0
 
