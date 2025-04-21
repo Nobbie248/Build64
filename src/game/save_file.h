@@ -26,7 +26,7 @@ struct SaveBlockSignature {
 };
 
 #define MAX_LEVELS 32
-#define MAX_PLACED_BLOCKS_PER_LEVEL 10
+#define MAX_PLACED_BLOCKS_PER_LEVEL 256
 extern struct SaveBlockPlacementData blockPlacementData;
 
 struct SaveFile {
@@ -49,7 +49,7 @@ struct SaveFile {
     
     struct SaveBlockSignature signature; // 32 bits
 
-    struct SaveBlockPlacementData blockPlacementData;
+    //struct SaveBlockPlacementData blockPlacementData;
 };
 
 enum SaveFileIndex {
@@ -81,7 +81,7 @@ struct MainMenuSaveData {
 
 struct SaveBuffer {
     // Each of the four save files has two copies. If one is bad, the other is used as a backup.
-    struct SaveFile files[NUM_SAVE_FILES][2];
+    struct SaveFile files[NUM_SAVE_FILES][1];
     // Main menu data, storing config options.
     struct MainMenuSaveData menuData;
 };

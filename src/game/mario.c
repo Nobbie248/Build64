@@ -1803,8 +1803,6 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
  **************************************************/
 
 void init_mario(void) {
-    gIsHotbar = FALSE;
-    gIsMarkerActive = FALSE;
     load_objects_from_grid();
     gMarioState->actionTimer = 0;
     gMarioState->framesSinceA = 0xFF;
@@ -1876,7 +1874,7 @@ void init_mario(void) {
 }
 
 void init_mario_from_save_file(void) {
-    copy_blocks_from_save();
+    //copy_blocks_from_save();
     gMarioState->playerID = 0;
     gMarioState->flags = MARIO_NONE;
     gMarioState->action = ACT_UNINITIALIZED;
