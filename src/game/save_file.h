@@ -26,7 +26,7 @@ struct SaveBlockSignature {
 };
 
 #define MAX_LEVELS 32
-#define MAX_PLACED_BLOCKS_PER_LEVEL 256
+#define MAX_PLACED_BLOCKS_PER_LEVEL 10
 extern struct SaveBlockPlacementData blockPlacementData;
 
 struct SaveFile {
@@ -49,7 +49,7 @@ struct SaveFile {
     
     struct SaveBlockSignature signature; // 32 bits
 
-    //struct SaveBlockPlacementData blockPlacementData;
+    struct SaveBlockPlacementData blockPlacementData;
 };
 
 enum SaveFileIndex {

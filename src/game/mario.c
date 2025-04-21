@@ -1874,7 +1874,7 @@ void init_mario(void) {
 }
 
 void init_mario_from_save_file(void) {
-    //copy_blocks_from_save();
+    copy_blocks_from_save();
     gMarioState->playerID = 0;
     gMarioState->flags = MARIO_NONE;
     gMarioState->action = ACT_UNINITIALIZED;

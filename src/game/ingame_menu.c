@@ -1602,16 +1602,16 @@ void render_widescreen_setting(void) {
         gConfig.widescreen ^= 1;
         save_file_set_widescreen_mode(gConfig.widescreen);
     }
-    // if (gPlayer1Controller->buttonPressed & R_JPAD){
-    //     copy_blocks_to_save(); 
-    //     gSaveFileModified = TRUE;   
-    // }
-    // if (gPlayer1Controller->buttonPressed & L_JPAD){
-    //     copy_blocks_from_save();  
-    // }
-    // if (gPlayer1Controller->buttonPressed & D_JPAD){
-    //     load_objects_from_grid();  
-    // }
+    if (gPlayer1Controller->buttonPressed & R_JPAD){
+        save_file_do_save(gCurrSaveFileNum - 1); 
+        gSaveFileModified = TRUE;   
+    }
+    if (gPlayer1Controller->buttonPressed & L_JPAD){
+        copy_blocks_from_save();  
+    }
+    if (gPlayer1Controller->buttonPressed & D_JPAD){
+        load_objects_from_grid();  
+    }
 }
 #endif
 
