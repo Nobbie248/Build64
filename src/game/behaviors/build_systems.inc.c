@@ -20,7 +20,7 @@
 struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
 u16 gPlacedBlockCounts[MAX_LEVELS];
 
-extern u32 gForrandomTimer __attribute__((section(".bss")));
+extern u32 gFileSelectTimer __attribute__((section(".bss")));
 struct Object *marker = NULL;
 s16 gBlockRotationYaw = 0;
 u8 gSelectedBlockType = 0;
@@ -273,7 +273,7 @@ void spawn_random_blocks(void) {
         isSpawning = TRUE;
         totalSpawned = 0;
         attempts = 0;
-        entropy_seed = (u16)(gForrandomTimer ^ 0xA5A5);
+        entropy_seed = (u16)((gFileSelectTimer ^ 0xA5A5) ^ get_entropy_seed_from_save());
     }
 
     if (!gMarioState || !gMarioState->marioObj || gCurrLevelNum >= MAX_LEVELS) return;

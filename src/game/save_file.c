@@ -833,3 +833,18 @@ void copy_blocks_from_save(void) {
         }
     }
 }
+
+u32 get_entropy_seed_from_save(void) {
+    u32 seed = 0;
+
+    struct SaveFile *sf = &gSaveBuffer.files[gCurrSaveFileNum - 1];
+
+    for (int i = 0; i < 15; i++) {
+        seed ^= sf->courseStars[i] * (i + 1);
+        seed ^= sf->courseCoinScores[i] << (i % 4);
+    }
+
+    seed ^= sf->flags;
+
+    return seed;
+}

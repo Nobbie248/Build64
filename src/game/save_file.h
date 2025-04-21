@@ -46,10 +46,8 @@ struct SaveFile {
     // cannon is open.
     u8 courseStars[COURSE_COUNT]; // 200 bits
     u8 courseCoinScores[COURSE_STAGES_COUNT]; // 120 bits
-    
-    struct SaveBlockSignature signature; // 32 bits
-
     struct SaveBlockPlacementData blockPlacementData;
+    struct SaveBlockSignature signature; // 32 bits
 };
 
 enum SaveFileIndex {
@@ -201,6 +199,7 @@ s32 check_warp_checkpoint(struct WarpNode *warpNode);
 
 void copy_blocks_to_save(void);
 void copy_blocks_from_save(void);
+u32 get_entropy_seed_from_save(void);
 
 #ifdef MULTILANG
 void multilang_set_language(u32 language);

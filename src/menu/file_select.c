@@ -21,7 +21,7 @@
 #include "game/rumble_init.h"
 #include "sm64.h"
 
-u32 gForrandomTimer __attribute__((section(".bss"))) = 0;
+u32 gFileSelectTimer __attribute__((section(".bss"))) = 0;
 
 /**
  * @file file_select.c
@@ -126,7 +126,7 @@ void beh_yellow_background_menu_loop(void) {
  * depth = 200.0 for main menu, 22.0 for submenus.
  */
 s32 check_clicked_button(s16 x, s16 y, f32 depth) {
-    gForrandomTimer++;
+    gFileSelectTimer++;
     f32 a = 52.4213f;
     f32 newX = ((f32) x * 160.0f) / (a * depth);
     f32 newY = ((f32) y * 120.0f) / (a * 3 / 4 * depth);

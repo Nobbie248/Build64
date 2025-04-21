@@ -591,10 +591,6 @@ void render_hud(void) {
             render_hud_keys();
         }
 
-        if (hudDisplayFlags & HUD_HOT_BAR) {
-            render_hot_bar();
-        }
-
 #ifdef BREATH_METER
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) render_hud_breath_meter();
 #endif
@@ -619,6 +615,8 @@ void render_hud(void) {
             render_debug_mode();
         }
 #endif
+    } if (hudDisplayFlags & HUD_HOT_BAR) {
+        render_hot_bar();
     }
 }
 

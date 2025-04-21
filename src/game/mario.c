@@ -1804,6 +1804,7 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
 
 void init_mario(void) {
     load_objects_from_grid();
+    
     gMarioState->actionTimer = 0;
     gMarioState->framesSinceA = 0xFF;
     gMarioState->framesSinceB = 0xFF;
