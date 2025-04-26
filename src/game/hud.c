@@ -663,6 +663,6 @@ if (gIsHotbar == TRUE && gIsBlockType[9]) {
 }
 if (gIsHotbar == TRUE) {
     gSPDisplayList(gDisplayListHead++, &hotbarinside_hotbarinside_mesh);
-}
+}              
     gSPPopMatrix(gDisplayListHead++, G_MTX_PROJECTION);
 }
