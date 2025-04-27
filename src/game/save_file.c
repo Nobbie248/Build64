@@ -314,8 +314,8 @@ void save_file_do_save(s32 fileIndex) {
               //sizeof(gSaveBuffer.files[fileIndex][1]));
 
         // Write to EEPROM
-        write_eeprom_data(&gSaveBuffer.files[fileIndex], sizeof(gSaveBuffer.files[fileIndex]));
         copy_blocks_to_save();
+        write_eeprom_data(&gSaveBuffer.files[fileIndex], sizeof(gSaveBuffer.files[fileIndex]));
         gSaveFileModified = FALSE;
     }
 

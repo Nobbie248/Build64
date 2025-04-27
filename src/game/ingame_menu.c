@@ -1603,8 +1603,8 @@ void render_widescreen_setting(void) {
         save_file_set_widescreen_mode(gConfig.widescreen);
     }
     if (gPlayer1Controller->buttonPressed & R_JPAD){
-        save_file_do_save(gCurrSaveFileNum - 1); 
-        gSaveFileModified = TRUE;   
+        gSaveFileModified = TRUE;
+        save_file_do_save(gCurrSaveFileNum - 1);   
     }
     if (gPlayer1Controller->buttonPressed & L_JPAD){
         copy_blocks_from_save();  
