@@ -1603,14 +1603,10 @@ void render_widescreen_setting(void) {
         save_file_set_widescreen_mode(gConfig.widescreen);
     }
     if (gPlayer1Controller->buttonPressed & R_JPAD){
+        gSaveFileModified = TRUE;                     // save happens twice because of the way retroarch flushes or something idk
+        save_file_do_save(gCurrSaveFileNum - 1);
         gSaveFileModified = TRUE;
         save_file_do_save(gCurrSaveFileNum - 1);   
-    }
-    if (gPlayer1Controller->buttonPressed & L_JPAD){
-        copy_blocks_from_save();  
-    }
-    if (gPlayer1Controller->buttonPressed & D_JPAD){
-        load_objects_from_grid();  
     }
 }
 #endif
