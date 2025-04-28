@@ -1,13 +1,8 @@
-extern u8 hotbarinside_hotbarnew2_ci4[];
-extern u8 hotbarinside_hotbarnew2_pal_rgba16[];
-extern u8 hotbarinside_pad_ia8[];
+extern u8 hotbarinside_hotbarnew3_ci4[];
+extern u8 hotbarinside_hotbarnew3_pal_rgba16[];
 extern Vtx hotbarinside_hotbarinside_mesh_vtx_cull[8];
-extern Vtx hotbarinside_hotbarinside_mesh_vtx_0[10];
+extern Vtx hotbarinside_hotbarinside_mesh_vtx_0[12];
 extern Gfx hotbarinside_hotbarinside_mesh_tri_0[];
-extern Vtx hotbarinside_hotbarinside_mesh_vtx_1[4];
-extern Gfx hotbarinside_hotbarinside_mesh_tri_1[];
 extern Gfx mat_hotbarinside_f3dlite_material_006_layer1[];
 extern Gfx mat_revert_hotbarinside_f3dlite_material_006_layer1[];
-extern Gfx mat_hotbarinside_f3dlite_material_055_layer1[];
-extern Gfx mat_revert_hotbarinside_f3dlite_material_055_layer1[];
 extern Gfx hotbarinside_hotbarinside_mesh[];
