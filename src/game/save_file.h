@@ -197,8 +197,8 @@ void disable_warp_checkpoint(void);
 void check_if_should_set_warp_checkpoint(struct WarpNode *warpNode);
 s32 check_warp_checkpoint(struct WarpNode *warpNode);
 
-void copy_blocks_to_save(void);
-void copy_blocks_from_save(void);
+void copy_blocks_to_save(s32 fileIndex);
+void copy_blocks_from_save(s32 fileIndex);
 u32 get_entropy_seed_from_save(void);
 
 #ifdef MULTILANG
