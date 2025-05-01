@@ -160,8 +160,9 @@ void update_player_object_placement(struct MarioState *m) {
     if (blockLimitTextTimer > 0) {
         print_text(15, 40, "MAX COURSE BLOCKS REACHED");
         blockLimitTextTimer--;
+    } else {
+    print_text_fmt_int(15, 40, " %d of 200", gPlacedBlockCounts[gCurrLevelNum]);
     }
-
     s32 markerGridX = to_grid_index(marker->oPosX);
     s32 markerGridY = to_grid_index(marker->oPosY);
     s32 markerGridZ = to_grid_index(marker->oPosZ);
