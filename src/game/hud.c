@@ -113,6 +113,28 @@ static struct PowerMeterHUD sBreathMeterHUD = {
 s32 sBreathMeterVisibleTimer = 0;
 #endif
 
+void render_hud_tex(s32 x, s32 y, Texture *texture) {
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+            gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture);
+            gDPTileSync(gDisplayListHead++);
+            gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0,
+                       0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+                       G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD);
+            gDPLoadSync(gDisplayListHead++);
+            gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, (16 * 16) - 1, CALC_DXT(16, G_IM_SIZ_16b_BYTES));
+            gDPPipeSync(gDisplayListHead++);
+            gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                       ((16 * G_IM_SIZ_16b_LINE_BYTES) / 8), 0, G_TX_RENDERTILE, 0,
+                       G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD,
+                       G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD);
+            gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, 0, 0,
+                           (16 - 1) << G_TEXTURE_IMAGE_FRAC, (16 - 1) << G_TEXTURE_IMAGE_FRAC);
+            gSPTextureRectangle(gDisplayListHead++,
+                x << 2, y << 2, (x + 15) << 2, (y + 15) << 2,
+                        G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10);
+            gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+}
+
 static struct CameraHUD sCameraHUD = { CAM_STATUS_NONE };
 
 /**
@@ -621,42 +643,20 @@ void render_hud(void) {
 }
 
 void render_hot_bar(void) {
-    if (!gIsHotbar) {
-        return;
-    }
+    if (!gIsHotbar) return;
 
-    Mtx *orthoMtx = alloc_display_list(sizeof(*orthoMtx));
-    Mtx *identityMtx = alloc_display_list(sizeof(*identityMtx));
-
-    if (orthoMtx == NULL || identityMtx == NULL) {
-        return;
-    }
-
-    guOrtho(orthoMtx, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -10, 10, 1.0f);
-    guMtxIdent(identityMtx);
-
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(orthoMtx),
-              G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
-
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(identityMtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+    static const Texture *hotbar_textures[10] = {
+        hotbar_texture_0, hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4,
+        hotbar_texture_5, hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9
+    };
 
     for (int i = 0; i < 10; i++) {
         if (gIsBlockType[i]) {
-            switch (i) {
-                case 0: gSPDisplayList(gDisplayListHead++, &hotbar_hotbar_mesh); break;
-                case 1: gSPDisplayList(gDisplayListHead++, &hotbar2_hotbar_001_mesh); break;
-                case 2: gSPDisplayList(gDisplayListHead++, &hotbar3_hotbar_002_mesh); break;
-                case 3: gSPDisplayList(gDisplayListHead++, &hotbar4_hotbar_003_mesh); break;
-                case 4: gSPDisplayList(gDisplayListHead++, &hotbar5_hotbar_004_mesh); break;
-                case 5: gSPDisplayList(gDisplayListHead++, &hotbar6_hotbar_005_mesh); break;
-                case 6: gSPDisplayList(gDisplayListHead++, &hotbar7_hotbar_006_mesh); break;
-                case 7: gSPDisplayList(gDisplayListHead++, &hotbar8_hotbar_007_mesh); break;
-                case 8: gSPDisplayList(gDisplayListHead++, &hotbar9_hotbar_008_mesh); break;
-                case 9: gSPDisplayList(gDisplayListHead++, &hotbar10_hotbar_009_mesh); break;
-            }
+            const Texture *tex = hotbar_textures[i];
+            s32 x = 16 + i * 20;
+            s32 y = SCREEN_HEIGHT - 40;
+
+            render_hud_tex(x, y, (Texture *)tex);
         }
     }
-    gSPDisplayList(gDisplayListHead++, &hotbarinside_hotbarinside_mesh);
-    gSPPopMatrix(gDisplayListHead++, G_MTX_PROJECTION);
 }

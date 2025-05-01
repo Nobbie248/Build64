@@ -1572,45 +1572,45 @@ ALIGNED8 static const Texture texture_hud_char_arrow_down[] = {
 #include "textures/segment2/segment2.081D0.rgba16.inc.c"
 };
 
-ALIGNED8 const u8 hotbar_texture_0[] = {
-    #include "textures/segment2/hotbar_texture_0.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_1[] = {
-    #include "textures/segment2/hotbar_texture_1.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_2[] = {
-    #include "textures/segment2/hotbar_texture_2.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_3[] = {
-    #include "textures/segment2/hotbar_texture_3.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_4[] = {
-    #include "textures/segment2/hotbar_texture_4.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_5[] = {
-    #include "textures/segment2/hotbar_texture_5.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_6[] = {
-    #include "textures/segment2/hotbar_texture_6.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_7[] = {
-    #include "textures/segment2/hotbar_texture_7.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_8[] = {
-    #include "textures/segment2/hotbar_texture_8.rgba16.inc.c"
-    };
-    
-    ALIGNED8 const u8 hotbar_texture_9[] = {
-    #include "textures/segment2/hotbar_texture_9.rgba16.inc.c"
-    };
+ALIGNED8 const Texture hotbar_texture_0[] = {
+#include "textures/segment2/hotbar_texture_0.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_1[] = {
+#include "textures/segment2/hotbar_texture_1.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_2[] = {
+#include "textures/segment2/hotbar_texture_2.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_3[] = {
+#include "textures/segment2/hotbar_texture_3.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_4[] = {
+#include "textures/segment2/hotbar_texture_4.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_5[] = {
+#include "textures/segment2/hotbar_texture_5.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_6[] = {
+#include "textures/segment2/hotbar_texture_6.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_7[] = {
+#include "textures/segment2/hotbar_texture_7.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_8[] = {
+#include "textures/segment2/hotbar_texture_8.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_9[] = {
+#include "textures/segment2/hotbar_texture_9.rgba16.inc.c"
+};
     
 
 // Moved from menu segment 7 to segment 2 to be unified with rest of HUD font
