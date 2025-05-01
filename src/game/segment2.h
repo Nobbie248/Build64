@@ -25,7 +25,18 @@ extern Texture texture_waterbox_mist[];
 extern Texture texture_waterbox_jrb_water[];
 extern Texture texture_waterbox_unknown_water[];
 extern Texture texture_waterbox_lava[];
-extern Texture texture_a_pad[];
+
+extern Texture hotbar_texture_0[];
+extern Texture hotbar_texture_1[];
+extern Texture hotbar_texture_2[];
+extern Texture hotbar_texture_3[];
+extern Texture hotbar_texture_4[];
+extern Texture hotbar_texture_5[];
+extern Texture hotbar_texture_6[];
+extern Texture hotbar_texture_7[];
+extern Texture hotbar_texture_8[];
+extern Texture hotbar_texture_9[];
+
 extern Gfx dl_proj_mtx_fullscreen[];
 extern Gfx dl_draw_quad_verts_0123[];
 extern Gfx dl_screen_transition_end[];
