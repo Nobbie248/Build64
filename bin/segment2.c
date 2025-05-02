@@ -1611,6 +1611,14 @@ ALIGNED8 const Texture hotbar_texture_8[] = {
 ALIGNED8 const Texture hotbar_texture_9[] = {
 #include "textures/segment2/hotbar_texture_9.rgba16.inc.c"
 };
+
+ALIGNED8 const Texture hotbar_yellow[] = {
+#include "textures/segment2/hotbar_yellow.rgba16.inc.c"
+};
+    
+ALIGNED8 const Texture hotbar_blue[] = {
+#include "textures/segment2/hotbar_blue.rgba16.inc.c"
+};
     
 
 // Moved from menu segment 7 to segment 2 to be unified with rest of HUD font

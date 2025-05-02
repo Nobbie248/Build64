@@ -113,26 +113,48 @@ static struct PowerMeterHUD sBreathMeterHUD = {
 s32 sBreathMeterVisibleTimer = 0;
 #endif
 
-void render_hud_tex(s32 x, s32 y, Texture *texture) {
+void render_hud_tex_16x16(s32 x, s32 y, Texture *texture) {
     gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
-            gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture);
-            gDPTileSync(gDisplayListHead++);
-            gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0,
-                       0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
-                       G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD);
-            gDPLoadSync(gDisplayListHead++);
-            gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, (16 * 16) - 1, CALC_DXT(16, G_IM_SIZ_16b_BYTES));
-            gDPPipeSync(gDisplayListHead++);
-            gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                       ((16 * G_IM_SIZ_16b_LINE_BYTES) / 8), 0, G_TX_RENDERTILE, 0,
-                       G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD,
-                       G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD);
-            gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, 0, 0,
-                           (16 - 1) << G_TEXTURE_IMAGE_FRAC, (16 - 1) << G_TEXTURE_IMAGE_FRAC);
-            gSPTextureRectangle(gDisplayListHead++,
-                x << 2, y << 2, (x + 15) << 2, (y + 15) << 2,
-                        G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10);
-            gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture);
+    gDPTileSync(gDisplayListHead++);
+    gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0,
+                0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD);
+    gDPLoadSync(gDisplayListHead++);
+    gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, (16 * 16) - 1, CALC_DXT(16, G_IM_SIZ_16b_BYTES));
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                ((16 * G_IM_SIZ_16b_LINE_BYTES) / 8), 0, G_TX_RENDERTILE, 0,
+                G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD,
+                G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD);
+    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, 0, 0,
+                    (16 - 1) << G_TEXTURE_IMAGE_FRAC, (16 - 1) << G_TEXTURE_IMAGE_FRAC);
+    gSPTextureRectangle(gDisplayListHead++,
+        x << 2, y << 2, (x + 15) << 2, (y + 15) << 2,
+                G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10);
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+}
+
+void render_hud_tex_32x32(s32 x, s32 y, Texture *texture) {
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture);
+    gDPTileSync(gDisplayListHead++);
+    gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0,
+               0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+               G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD);
+    gDPLoadSync(gDisplayListHead++);
+    gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, (32 * 32) - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES));
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, (32 * 2) / 8,
+               0, G_TX_RENDERTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD,
+               G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD);
+    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, 0, 0,
+                   (32 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC);
+    gSPTextureRectangle(gDisplayListHead++,
+    x << 2, y << 2,
+    (x + 31) << 2, (y + 31) << 2,
+    G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10);
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
 }
 
 static struct CameraHUD sCameraHUD = { CAM_STATUS_NONE };
@@ -651,12 +673,20 @@ void render_hot_bar(void) {
     };
 
     for (int i = 0; i < 10; i++) {
-        if (gIsBlockType[i]) {
-            const Texture *tex = hotbar_textures[i];
-            s32 x = 16 + i * 20;
-            s32 y = SCREEN_HEIGHT - 40;
+        const Texture *tex = hotbar_textures[i];
+        s32 x = 71 + i * 18;
+        s32 y = SCREEN_HEIGHT - 36;
 
-            render_hud_tex(x, y, (Texture *)tex);
+        // Always render blue background
+        render_hud_tex_32x32(x-8, y-8, hotbar_blue);
+
+        // If this block is selected, overlay yellow highlight
+        if (gIsBlockType[i]) {
+            render_hud_tex_16x16(x, y, hotbar_yellow);
         }
+
+        // Draw the actual block icon on top
+        render_hud_tex_16x16(x, y, (Texture *)tex);
     }
 }
+
