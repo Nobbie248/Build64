@@ -672,20 +672,20 @@ void render_hot_bar(void) {
         hotbar_texture_5, hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9
     };
 
+    render_hud_tex_32x32(6, 200, hint_p1);
+    render_hud_tex_32x32(38, 200, hint_p2);
+
     for (int i = 0; i < 10; i++) {
         const Texture *tex = hotbar_textures[i];
         s32 x = 71 + i * 18;
         s32 y = SCREEN_HEIGHT - 36;
 
-        // Always render blue background
-        render_hud_tex_32x32(x-8, y-8, hotbar_blue);
+        render_hud_tex_32x32(x-8, y-8, hotbar_blue); //background
 
-        // If this block is selected, overlay yellow highlight
         if (gIsBlockType[i]) {
-            render_hud_tex_16x16(x, y, hotbar_yellow);
+            render_hud_tex_16x16(x, y, hotbar_yellow); // highlight
         }
 
-        // Draw the actual block icon on top
         render_hud_tex_16x16(x, y, (Texture *)tex);
     }
 }

@@ -38,6 +38,8 @@ extern Texture hotbar_texture_8[];
 extern Texture hotbar_texture_9[];
 extern Texture hotbar_yellow[];
 extern Texture hotbar_blue[];
+extern Texture hint_p1[];
+extern Texture hint_p2[];
 
 extern Gfx dl_proj_mtx_fullscreen[];
 extern Gfx dl_draw_quad_verts_0123[];
