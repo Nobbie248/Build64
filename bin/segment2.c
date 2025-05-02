@@ -1620,15 +1620,6 @@ ALIGNED8 const Texture hotbar_blue[] = {
 #include "textures/segment2/hotbar_blue.rgba16.inc.c"
 };
 
-ALIGNED8 const Texture hint_p1[] = {
-#include "textures/segment2/hint_p1.rgba16.inc.c"
-};
-
-ALIGNED8 const Texture hint_p2[] = {
-#include "textures/segment2/hint_p2.rgba16.inc.c"
-};
-    
-
 // Moved from menu segment 7 to segment 2 to be unified with rest of HUD font
 #ifdef JAPANESE_CHARACTERS
 ALIGNED8 static const Texture texture_hud_char_katakana_fu[] = {

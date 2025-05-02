@@ -671,9 +671,10 @@ void render_hot_bar(void) {
         hotbar_texture_0, hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4,
         hotbar_texture_5, hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9
     };
-
-    render_hud_tex_32x32(6, 200, hint_p1);
-    render_hud_tex_32x32(38, 200, hint_p2);
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    print_generic_string ( 10, 25, "▲ Rotate");
+    print_generic_string ( 10, 13, "▼ Delete");
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
     for (int i = 0; i < 10; i++) {
         const Texture *tex = hotbar_textures[i];
