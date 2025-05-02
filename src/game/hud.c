@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include "hacktice/main.h"
+#include "src/game/build_systems.h"
 
 /* @file hud.c
  * This file implements HUD rendering and power meter animations.
@@ -666,6 +667,9 @@ void render_hud(void) {
 
 void render_hot_bar(void) {
     if (!gIsHotbar) return;
+    u8 amount = gPlacedBlockCounts[gCurrLevelNum];
+    char buffer[8];
+    sprintf(buffer, "%d", amount);
 
     static const Texture *hotbar_textures[10] = {
         hotbar_texture_0, hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4,
@@ -674,6 +678,15 @@ void render_hot_bar(void) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     print_generic_string ( 10, 25, "▲ Rotate");
     print_generic_string ( 10, 13, "▼ Delete");
+
+    print_generic_string(15, 40, buffer);
+    print_generic_string(35, 40, "of 50");
+
+    if (blockLimitTextTimer > 0) {
+        set_text_color(255, 0, 0);
+        print_generic_string(80, 40, "Max course blocks reached!");
+        blockLimitTextTimer--;
+    }
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
     for (int i = 0; i < 10; i++) {

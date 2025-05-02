@@ -29,6 +29,7 @@ struct SaveBlockPlacementData {
 
 extern u8 gIsHotbar;
 extern u8 gIsBlockType[BLOCK_TYPE_COUNT];
+extern s32 blockLimitTextTimer;
 
 void update_player_object_placement(struct MarioState *m);
 void update_marker(struct MarioState *m);

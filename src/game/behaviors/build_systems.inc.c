@@ -16,6 +16,7 @@
 #include "src/game/build_systems.h"
 #include "src/game/save_file.h"
 #include "src/game/ingame_menu.h"
+#include "src/game/hud.h"
 
 struct PlacedBlockInstance gPlacedBlocks[MAX_LEVELS][MAX_PLACED_BLOCKS_PER_LEVEL];
 u16 gPlacedBlockCounts[MAX_LEVELS];
@@ -28,6 +29,7 @@ u8 gSelectedMarkerType = 0;
 u8 gIsMarkerActive = FALSE;
 u8 gIsBlockType[BLOCK_TYPE_COUNT] = { 0 };
 u8 gIsHotbar;
+s32 blockLimitTextTimer = 0;
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
     MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER,
@@ -152,17 +154,10 @@ void update_marker(struct MarioState *m) {
 
 // place object to grid
 void update_player_object_placement(struct MarioState *m) {
-    static s32 blockLimitTextTimer = 0;
 
     if (gCurrLevelNum >= MAX_LEVELS) return; // safty :)
     if (!marker) return;
 
-    if (blockLimitTextTimer > 0) {
-        print_text(15, 40, "MAX COURSE BLOCKS REACHED");
-        blockLimitTextTimer--;
-    } else {  
-        print_text_fmt_int(15, 40, " %d of 50", gPlacedBlockCounts[gCurrLevelNum]);
-    }
     s32 markerGridX = to_grid_index(marker->oPosX);
     s32 markerGridY = to_grid_index(marker->oPosY);
     s32 markerGridZ = to_grid_index(marker->oPosZ);
