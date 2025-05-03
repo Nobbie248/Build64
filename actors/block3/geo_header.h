@@ -1,0 +1,10 @@
+extern const GeoLayout block3_geo[];
+extern Lights1 block3_f3dlite_material_001_lights;
+extern u8 block3_SUPER_MARIO_64_EC819D1B_0_2_all_ci8[];
+extern u8 block3_SUPER_MARIO_64_EC819D1B_0_2_all_pal_rgba16[];
+extern Vtx block3_block3_mesh_layer_1_vtx_cull[8];
+extern Vtx block3_block3_mesh_layer_1_vtx_0[12];
+extern Gfx block3_block3_mesh_layer_1_tri_0[];
+extern Gfx mat_block3_f3dlite_material_001[];
+extern Gfx mat_revert_block3_f3dlite_material_001[];
+extern Gfx block3_block3_mesh_layer_1[];

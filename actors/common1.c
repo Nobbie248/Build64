@@ -106,3 +106,8 @@ UNUSED static const u64 binid_22 = 22;
 #include "hotbar9/model.inc.c"
 #include "hotbar10/model.inc.c"
 #include "hotbarinside/model.inc.c"
+
+#include "block3/collision.inc.c"
+#include "block3/model.inc.c"
+#include "marker3/collision.inc.c"
+#include "marker3/model.inc.c"

@@ -32,7 +32,7 @@ u8 gIsHotbar;
 s32 blockLimitTextTimer = 0;
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
-    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER,
+    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER, MODEL_MARKER,
     MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER
 };
 
@@ -42,12 +42,12 @@ static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = { // dont nee
 };
 
 static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
-    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK,
+    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK, MODEL_BLOCK,
     MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK
 };
 
 static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
-    bhvBlock, bhvBlock2, bhvBlock, bhvBlock, bhvBlock,
+    bhvBlock, bhvBlock2, bhvBlock3, bhvBlock, bhvBlock,
     bhvBlock, bhvBlock, bhvBlock, bhvBlock, bhvBlock
 };
 
@@ -108,7 +108,6 @@ void bhv_marker_loop(void) { // not in use yet
 
 // this is the ui for placing
 void update_marker(struct MarioState *m) {
-    if (gIsMarkerActive = FALSE) {return;}
     if (((m->action == ACT_DISAPPEARED) ||
          (m->action == ACT_PUSHING_DOOR) ||
          (m->action == ACT_PULLING_DOOR) ||
@@ -280,7 +279,7 @@ void spawn_random_blocks(void) {
     if (!isSpawning) return;
 
     s32 blocksThisFrame = 0;
-    while (blocksThisFrame < 32 && totalSpawned < 512 && gPlacedBlockCounts[gCurrLevelNum] < MAX_PLACED_BLOCKS_PER_LEVEL && attempts < 1024) {
+    while (blocksThisFrame < 32 && totalSpawned < 256 && gPlacedBlockCounts[gCurrLevelNum] < MAX_PLACED_BLOCKS_PER_LEVEL && attempts < 1024) {
         attempts++;
 
         u8 x = ((random_u16() ^ entropy_seed) + attempts) % GRID_MAP_SIZE;
@@ -310,7 +309,7 @@ void spawn_random_blocks(void) {
         totalSpawned++;
     }
 
-    if (totalSpawned >= 1024 || gPlacedBlockCounts[gCurrLevelNum] >= MAX_PLACED_BLOCKS_PER_LEVEL) {
+    if (totalSpawned >= 256 || gPlacedBlockCounts[gCurrLevelNum] >= MAX_PLACED_BLOCKS_PER_LEVEL) {
         isSpawning = FALSE;
     }
 }

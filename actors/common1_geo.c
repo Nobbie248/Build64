@@ -29,3 +29,5 @@
 #include "block/geo.inc.c"
 #include "block2/geo.inc.c"
 #include "marker2/geo.inc.c"
+#include "block3/geo.inc.c"
+#include "marker3/geo.inc.c"
