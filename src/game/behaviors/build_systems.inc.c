@@ -108,10 +108,13 @@ void bhv_marker_loop(void) { // not in use yet
 
 // this is the ui for placing
 void update_marker(struct MarioState *m) {
+    if (gIsMarkerActive = FALSE) {return;}
     if (((m->action == ACT_DISAPPEARED) ||
          (m->action == ACT_PUSHING_DOOR) ||
          (m->action == ACT_PULLING_DOOR) ||
-         (m->flags & MARIO_TELEPORTING) ||
+         (m->action == ACT_STAR_DANCE_EXIT) ||
+         (m->action == ACT_DEATH_EXIT) ||
+         (m->action == ACT_EXIT_AIRBORNE) ||
          (gPlayer1Controller->buttonPressed & B_BUTTON)) && marker != NULL) {
         gIsHotbar = FALSE;
         obj_mark_for_deletion(marker);

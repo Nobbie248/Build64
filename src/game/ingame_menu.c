@@ -2036,7 +2036,12 @@ s32 render_pause_courses_and_castle(void) {
                 gMenuMode = MENU_MODE_NONE;
 
                 if (gDialogLineNum == MENU_OPT_EXIT_COURSE) {
+                    if (gIsMarkerActive = TRUE){
+                    marker = NULL;
+                    gIsHotbar = FALSE;
+                    gIsMarkerActive = FALSE;
                     index = gDialogLineNum;
+                    }
                 } else { // MENU_OPT_CONTINUE or MENU_OPT_CAMERA_ANGLE_R
                     index = MENU_OPT_DEFAULT;
                 }

@@ -9,8 +9,8 @@
 #define GRID_MAP_SIZE 64 // total size of grid in each stage
 #define MAX_LEVELS 32 // do not put less then 31 or it can crash
 #define MAX_PLACED_BLOCKS_PER_LEVEL 50// 512 is safe
-#define MARKER_TYPE_COUNT 10 // preview object models
-#define BLOCK_TYPE_COUNT 10 // types of objects to place
+#define MARKER_TYPE_COUNT 32 // preview object models
+#define BLOCK_TYPE_COUNT 32 // types of objects to place
 
 struct PlacedBlockInstance {
     u32 x:6 , y: 6, z: 6,
@@ -30,6 +30,7 @@ struct SaveBlockPlacementData {
 extern u8 gIsHotbar;
 extern u8 gIsBlockType[BLOCK_TYPE_COUNT];
 extern s32 blockLimitTextTimer;
+extern struct Object *marker;
 
 void update_player_object_placement(struct MarioState *m);
 void update_marker(struct MarioState *m);
