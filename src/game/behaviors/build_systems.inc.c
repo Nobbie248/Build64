@@ -42,12 +42,12 @@ static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = { // dont nee
 };
 
 static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
-    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK, MODEL_BLOCK,
+    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_NONE, MODEL_BLOCK,
     MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK
 };
 
 static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
-    bhvBlock, bhvBlock2, bhvBlock3, bhvBlock, bhvBlock,
+    bhvBlock, bhvBlock2, bhvBlock3, bhvBlockDoor, bhvBlock,
     bhvBlock, bhvBlock, bhvBlock, bhvBlock, bhvBlock
 };
 
@@ -227,6 +227,41 @@ void system_obj_loop(void) {
         }
     }
 }
+
+void system_obj_loop_door(void) {
+    if (o->oAction == 0) {
+        spawn_object_abs_with_rot(
+            o, 0,
+            MODEL_UNKNOWN_DOOR_21,
+            bhvDoor,            
+            o->oPosX, o->oPosY, o->oPosZ,
+            0, o->oFaceAngleYaw, 0
+        );
+        o->oAction = 1;
+    }
+    if (marker != NULL && (gPlayer1Controller->buttonPressed & D_JPAD)) {
+        s32 gx = to_grid_index(marker->oPosX);
+        s32 gy = to_grid_index(marker->oPosY);
+        s32 gz = to_grid_index(marker->oPosZ);
+        s32 ox = to_grid_index(o->oPosX);
+        s32 oy = to_grid_index(o->oPosY);
+        s32 oz = to_grid_index(o->oPosZ);
+
+        if (gx == ox && gy == oy && gz == oz) {
+            struct Object *door = cur_obj_nearest_object_with_behavior(bhvDoor);
+            if (door != NULL) {
+                if ((s32)door->oPosX == o->oPosX &&
+                    (s32)door->oPosY == o->oPosY &&
+                    (s32)door->oPosZ == o->oPosZ) {
+                    obj_mark_for_deletion(door);
+                }
+            }
+            remove_block(gCurrLevelNum, ox, oy, oz);
+            obj_mark_for_deletion(o);
+        }
+    }
+}
+
 
 // load grid into level
 void load_objects_from_grid(void) {

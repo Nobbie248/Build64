@@ -6133,3 +6133,17 @@ const BehaviorScript bhvBlock3[] = {
     CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
+
+const BehaviorScript bhvBlockDoor[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    SET_INT(oInteractType, INTERACT_DOOR),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_FLOAT(oCollisionDistance, 200),
+    SET_FLOAT(oDrawingDistance, 30000), 
+    LOAD_COLLISION_DATA(door_seg3_collision_door),
+    SET_HOME(),
+    BEGIN_LOOP(),
+    CALL_NATIVE(system_obj_loop_door),
+    CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};

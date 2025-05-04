@@ -1,6 +1,6 @@
 extern const GeoLayout marker3_geo[];
-extern u8 marker3_SUPER_MARIO_64_B1F1CC42_0_2_all_ci8[];
-extern u8 marker3_SUPER_MARIO_64_B1F1CC42_0_2_all_pal_rgba16[];
+extern u8 marker3__9BAE866111F9EB74BEE24DF7741B4A11_ci4[];
+extern u8 marker3__9BAE866111F9EB74BEE24DF7741B4A11_pal_rgba16[];
 extern Vtx marker3_marker3_mesh_layer_5_vtx_cull[8];
 extern Vtx marker3_marker3_mesh_layer_5_vtx_0[12];
 extern Gfx marker3_marker3_mesh_layer_5_tri_0[];
