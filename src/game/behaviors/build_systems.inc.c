@@ -32,8 +32,8 @@ u8 gIsHotbar;
 s32 blockLimitTextTimer = 0;
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
-    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER, MODEL_MARKER,
-    MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER
+    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,
+    MODEL_MARKER6, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER
 };
 
 static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = { // dont need to change in most cases
@@ -42,13 +42,13 @@ static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = { // dont nee
 };
 
 static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
-    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_NONE, MODEL_BLOCK,
-    MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK
+    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
+    MODEL_BLOCK6, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK
 };
 
 static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
-    bhvBlock, bhvBlock2, bhvBlock3, bhvBlockDoor, bhvBlock,
-    bhvBlock, bhvBlock, bhvBlock, bhvBlock, bhvBlock
+    bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
+    bhvBlock6, bhvBlock, bhvBlock, bhvBlock, bhvBlock
 };
 
 s32 to_grid_index(f32 pos) {
@@ -230,15 +230,22 @@ void system_obj_loop(void) {
 
 void system_obj_loop_door(void) {
     if (o->oAction == 0) {
+        // Spawn door in front of this object based on its yaw
+        s16 yaw = o->oFaceAngleYaw;
+        f32 offset = 115.0f;
+        f32 dx = offset * sins(yaw);
+        f32 dz = offset * coss(yaw);
+
         spawn_object_abs_with_rot(
             o, 0,
             MODEL_UNKNOWN_DOOR_21,
-            bhvDoor,            
-            o->oPosX, o->oPosY, o->oPosZ,
-            0, o->oFaceAngleYaw, 0
+            bhvDoor,
+            o->oPosX + dx, o->oPosY, o->oPosZ + dz,
+            0, yaw, 0
         );
         o->oAction = 1;
     }
+
     if (marker != NULL && (gPlayer1Controller->buttonPressed & D_JPAD)) {
         s32 gx = to_grid_index(marker->oPosX);
         s32 gy = to_grid_index(marker->oPosY);
@@ -250,17 +257,27 @@ void system_obj_loop_door(void) {
         if (gx == ox && gy == oy && gz == oz) {
             struct Object *door = cur_obj_nearest_object_with_behavior(bhvDoor);
             if (door != NULL) {
-                if ((s32)door->oPosX == o->oPosX &&
+                // Compare door position with calculated door offset
+                s16 yaw = o->oFaceAngleYaw;
+                f32 offset = 115.0f;
+                f32 dx = offset * sins(yaw);
+                f32 dz = offset * coss(yaw);
+                s32 tx = (s32)(o->oPosX + dx);
+                s32 tz = (s32)(o->oPosZ + dz);
+
+                if ((s32)door->oPosX == tx &&
                     (s32)door->oPosY == o->oPosY &&
-                    (s32)door->oPosZ == o->oPosZ) {
+                    (s32)door->oPosZ == tz) {
                     obj_mark_for_deletion(door);
                 }
             }
+
             remove_block(gCurrLevelNum, ox, oy, oz);
             obj_mark_for_deletion(o);
         }
     }
 }
+
 
 
 // load grid into level
