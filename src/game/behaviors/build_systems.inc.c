@@ -106,7 +106,7 @@ void bhv_marker_loop(void) { // not in use yet
     o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 }
 
-// this is the ui for placing
+// this is the preview for placing
 void update_marker(struct MarioState *m) {
     if (((m->action == ACT_DISAPPEARED) ||
          (m->action == ACT_PUSHING_DOOR) ||

@@ -1875,6 +1875,7 @@ void init_mario(void) {
 }
 
 void init_mario_from_save_file(void) {
+    buttonswap = save_file_get_buttonswap(gCurrSaveFileNum - 1) ? TRUE : FALSE;
     copy_blocks_from_save(gCurrSaveFileNum - 1);
     gMarioState->playerID = 0;
     gMarioState->flags = MARIO_NONE;

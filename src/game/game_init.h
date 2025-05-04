@@ -91,4 +91,6 @@ void render_init(void);
 void select_gfx_pool(void);
 void display_and_vsync(void);
 
+extern u8 buttonswap;
+
 #endif // GAME_INIT_H

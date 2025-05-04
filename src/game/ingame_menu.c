@@ -1570,6 +1570,12 @@ void render_pause_red_coins(void) {
         print_animated_red_coin(GFX_DIMENSIONS_FROM_RIGHT_EDGE(116), 16);
     }
 }
+LangArray textOptions = DEFINE_LANGUAGE_ARRAY(
+    "                          PRESS RIGHT DPAD TO SAVE\n                          PRESS LEFT DPAD TO SWAP L & R",
+    " ",
+    " ",
+    " ",
+    " ");
 
 LangArray textCurrRatio43 = DEFINE_LANGUAGE_ARRAY(
     "ASPECT RATIO: 4:3\nPRESS L TO SWITCH",
@@ -1603,13 +1609,26 @@ void render_widescreen_setting(void) {
         save_file_set_widescreen_mode(gConfig.widescreen);
     }
     if (gPlayer1Controller->buttonPressed & R_JPAD){
+        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
         gSaveFileModified = TRUE;                     // save happens twice because of the way retroarch flushes or something idk
         save_file_do_save(gCurrSaveFileNum - 1);
         gSaveFileModified = TRUE;
         save_file_do_save(gCurrSaveFileNum - 1);   
     }
+    if (gPlayer1Controller->buttonPressed & L_JPAD) { 
+        buttonswap ^= TRUE;
+        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
+        save_file_set_buttonswap(gCurrSaveFileNum - 1, buttonswap ? 1 : 0);  
+    }
 }
 #endif
+
+void render_option_text(void) {
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    set_text_color(0, 200, 255);
+    print_generic_string(10, 24, LANG_ARRAY(textOptions));
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+}
 
 void render_hacktice_setting(int x, int y)
 {
@@ -2069,6 +2088,7 @@ s32 render_pause_courses_and_castle(void) {
 #if defined(WIDE) && !defined(PUPPYCAM)
         if (!Hacktice_gEnabled)
             render_widescreen_setting();
+            render_option_text();
 #endif
     gDialogTextAlpha += 25;
     if (gDialogTextAlpha > 250) {

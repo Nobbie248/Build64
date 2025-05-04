@@ -848,3 +848,18 @@ u32 get_entropy_seed_from_save(void) {
 
     return seed;
 }
+
+u8 save_file_get_buttonswap(s32 fileIndex) {
+    struct SaveFile *saveFile = &gSaveBuffer.files[fileIndex][0];
+    return saveFile->buttonswapFlag;
+}
+
+void save_file_set_buttonswap(s32 fileIndex, u8 value) {
+    struct SaveFile *saveFile = &gSaveBuffer.files[fileIndex][0];
+
+    if (saveFile->buttonswapFlag != value) {
+        saveFile->buttonswapFlag = value;
+        gSaveFileModified = TRUE;
+        save_file_do_save(fileIndex);
+    }
+}

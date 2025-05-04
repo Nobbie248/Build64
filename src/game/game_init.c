@@ -45,6 +45,8 @@ Gfx *gDisplayListHead;
 u8 *gGfxPoolEnd;
 struct GfxPool *gGfxPool;
 
+u8 buttonswap = FALSE;
+
 // OS Controllers
 struct Controller gControllers[MAXCONTROLLERS];
 OSContStatus gControllerStatuses[MAXCONTROLLERS];
@@ -621,6 +623,19 @@ void read_controller_inputs(s32 threadID) {
 
         // if we're receiving inputs, update the controller struct with the new button info.
         if (controller->controllerData != NULL) {
+            if (buttonswap == TRUE) { //button swap option
+                u32 oldButton = controllerData->button;
+                u32 newButton = oldButton & ~(L_TRIG | R_TRIG);
+                if (oldButton & L_TRIG) {
+                    newButton |= R_TRIG; 
+                }
+                controllerData->button = newButton;
+                if (oldButton & R_TRIG) {
+                    newButton |= L_TRIG; 
+                }
+                controllerData->button = newButton;
+                
+            }
             // HackerSM64: Swaps Z and L, only on console, and only when playing with a GameCube controller.
             if ((controller->statusData->type & CONT_CONSOLE_MASK) == CONT_CONSOLE_GCN) {
                 u32 oldButton = controllerData->button;

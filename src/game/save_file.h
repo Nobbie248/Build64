@@ -18,7 +18,7 @@
     #define EEPROM_SIZE 0x200
 #endif
 
-#define NUM_SAVE_FILES 4
+#define NUM_SAVE_FILES 1
 
 struct SaveBlockSignature {
     u16 magic;
@@ -26,7 +26,7 @@ struct SaveBlockSignature {
 };
 
 #define MAX_LEVELS 32
-#define MAX_PLACED_BLOCKS_PER_LEVEL 50
+#define MAX_PLACED_BLOCKS_PER_LEVEL 200
 extern struct SaveBlockPlacementData blockPlacementData;
 
 struct SaveFile {
@@ -40,7 +40,7 @@ struct SaveFile {
     Vec3s capPos; // 48 bits
 
     u32 flags;
-
+    u8 buttonswapFlag;
     // Star flags for each course.
     // The most significant bit of the byte *following* each course is set if the
     // cannon is open.
@@ -200,6 +200,8 @@ s32 check_warp_checkpoint(struct WarpNode *warpNode);
 void copy_blocks_to_save(s32 fileIndex);
 void copy_blocks_from_save(s32 fileIndex);
 u32 get_entropy_seed_from_save(void);
+void save_file_set_buttonswap(s32 fileIndex, u8 value);
+u8 save_file_get_buttonswap(s32 fileIndex);
 
 #ifdef MULTILANG
 void multilang_set_language(u32 language);

@@ -680,7 +680,7 @@ void render_hot_bar(void) {
     print_generic_string ( 10, 13, "▼ Delete");
 
     print_generic_string(15, 40, buffer);
-    print_generic_string(35, 40, "of 50");
+    print_generic_string(35, 40, " of 200");
 
     if (blockLimitTextTimer > 0) {
         set_text_color(255, 0, 0);
