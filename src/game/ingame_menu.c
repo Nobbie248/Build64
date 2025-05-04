@@ -1599,9 +1599,9 @@ void render_widescreen_setting(void) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     set_text_color(255, 255, 255);
     if (!gConfig.widescreen) {
-        print_generic_string(10, 24, LANG_ARRAY(textCurrRatio43));
-    } else {
         print_generic_string(10, 24, LANG_ARRAY(textCurrRatio169));
+    } else {
+        print_generic_string(10, 24, LANG_ARRAY(textCurrRatio43));
     }
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
     if (gPlayer1Controller->buttonPressed & L_TRIG){
