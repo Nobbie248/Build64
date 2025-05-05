@@ -1,0 +1,15 @@
+extern const GeoLayout marker7_geo[];
+extern u8 marker7__9BAE866111F9EB74BEE24DF7741B4A11_ci4[];
+extern u8 marker7__9BAE866111F9EB74BEE24DF7741B4A11_pal_rgba16[];
+extern u8 marker7_glass_ci4[];
+extern u8 marker7_glass_pal_rgba16[];
+extern Vtx marker7_marker7_mesh_layer_5_vtx_cull[8];
+extern Vtx marker7_marker7_mesh_layer_5_vtx_0[46];
+extern Gfx marker7_marker7_mesh_layer_5_tri_0[];
+extern Vtx marker7_marker7_mesh_layer_5_vtx_1[8];
+extern Gfx marker7_marker7_mesh_layer_5_tri_1[];
+extern Gfx mat_marker7_f3dlite_material_004[];
+extern Gfx mat_revert_marker7_f3dlite_material_004[];
+extern Gfx mat_marker7_f3dlite_material_006[];
+extern Gfx mat_revert_marker7_f3dlite_material_006[];
+extern Gfx marker7_marker7_mesh_layer_5[];

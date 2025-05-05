@@ -584,5 +584,7 @@
 #define MODEL_BLOCK5 0xF4
 #define MODEL_MARKER6 0xF5
 #define MODEL_BLOCK6 0xF6
+#define MODEL_MARKER7 0xF7
+#define MODEL_BLOCK7 0xF8
 
 #endif // MODEL_IDS_H

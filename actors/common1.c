@@ -123,3 +123,7 @@ UNUSED static const u64 binid_22 = 22;
 #include "block6/model.inc.c"
 #include "marker6/collision.inc.c"
 #include "marker6/model.inc.c"
+#include "block7/collision.inc.c"
+#include "block7/model.inc.c"
+#include "marker7/collision.inc.c"
+#include "marker7/model.inc.c"

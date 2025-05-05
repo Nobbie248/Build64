@@ -33,7 +33,7 @@ s32 blockLimitTextTimer = 0;
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
     MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,
-    MODEL_MARKER6, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER
+    MODEL_MARKER6, MODEL_MARKER7, MODEL_MARKER, MODEL_MARKER, MODEL_MARKER
 };
 
 static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = { // dont need to change in most cases
@@ -43,12 +43,12 @@ static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = { // dont nee
 
 static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
     MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
-    MODEL_BLOCK6, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK
+    MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK, MODEL_BLOCK, MODEL_BLOCK
 };
 
 static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
     bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
-    bhvBlock6, bhvBlock, bhvBlock, bhvBlock, bhvBlock
+    bhvBlock6, bhvBlock7, bhvBlock, bhvBlock, bhvBlock
 };
 
 s32 to_grid_index(f32 pos) {

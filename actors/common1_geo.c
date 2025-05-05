@@ -37,3 +37,5 @@
 #include "marker5/geo.inc.c"
 #include "block6/geo.inc.c"
 #include "marker6/geo.inc.c"
+#include "block7/geo.inc.c"
+#include "marker7/geo.inc.c"
