@@ -548,5 +548,8 @@ extern const BehaviorScript bhvBlock4[];
 extern const BehaviorScript bhvBlock5[];
 extern const BehaviorScript bhvBlock6[];
 extern const BehaviorScript bhvBlock7[];
+extern const BehaviorScript bhvBlock8[];
+extern const BehaviorScript bhvBlock9[];
+extern const BehaviorScript bhvBlock10[];
 
 #endif // BEHAVIOR_DATA_H
