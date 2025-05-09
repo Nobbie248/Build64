@@ -671,9 +671,11 @@ void render_hot_bar(void) {
     char buffer[8];
     sprintf(buffer, "%d", amount);
 
-    static const Texture *hotbar_textures[10] = {
+    static const Texture *hotbar_textures[20] = {
         hotbar_texture_0, hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4,
-        hotbar_texture_5, hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9
+        hotbar_texture_5, hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9,
+        hotbar_texture_0, hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4,
+        hotbar_texture_5, hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_2
     };
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     print_generic_string ( 10, 25, "▲ Rotate");
@@ -682,25 +684,34 @@ void render_hot_bar(void) {
     print_generic_string(15, 40, buffer);
     print_generic_string(35, 40, " of 200");
 
-    if (blockLimitTextTimer > 0) {
+    char pageText[16];
+    sprintf(pageText, "Block Set %d", gHotbarPage + 1);
+    print_generic_string(190, 40, pageText);
+
+    if (blockLimitTextTimer > 0) { // currently has a bug making it only appear if pause it hit once
         set_text_color(255, 0, 0);
-        print_generic_string(80, 40, "Max course blocks reached!");
+        print_generic_string(80, 40, "Max Blocks Reached!");
         blockLimitTextTimer--;
     }
+
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
     for (int i = 0; i < 10; i++) {
-        const Texture *tex = hotbar_textures[i];
+        int blockIndex = i + (gHotbarPage * 10);
+        if (blockIndex >= BLOCK_TYPE_COUNT) break;
+    
+        const Texture *tex = hotbar_textures[blockIndex];
         s32 x = 71 + i * 18;
         s32 y = SCREEN_HEIGHT - 36;
-
-        render_hud_tex_32x32(x-8, y-8, hotbar_blue); //background
-
-        if (gIsBlockType[i]) {
-            render_hud_tex_16x16(x, y, hotbar_yellow); // highlight
+    
+        render_hud_tex_32x32(x - 8, y - 8, hotbar_blue);
+    
+        if (gIsBlockType[blockIndex]) {
+            render_hud_tex_16x16(x, y, hotbar_yellow);
         }
-
+    
         render_hud_tex_16x16(x, y, (Texture *)tex);
     }
+    
 }
 

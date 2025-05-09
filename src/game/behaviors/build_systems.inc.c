@@ -30,25 +30,39 @@ u8 gIsMarkerActive = FALSE;
 u8 gIsBlockType[BLOCK_TYPE_COUNT] = { 0 };
 u8 gIsHotbar;
 s32 blockLimitTextTimer = 0;
+u8 gHotbarPage = 0;
+
 
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
     MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,
-    MODEL_MARKER6, MODEL_MARKER7, MODEL_MARKER8, MODEL_MARKER9, MODEL_MARKER10
+    MODEL_MARKER6, MODEL_MARKER7, MODEL_MARKER8, MODEL_MARKER9, MODEL_MARKER10,
+
+    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,
+    MODEL_MARKER6, MODEL_MARKER7, MODEL_MARKER8, MODEL_MARKER9, MODEL_MARKER3
 };
 
 static const BehaviorScript *PreviewBehaviors[MARKER_TYPE_COUNT] = { // dont need to change in most cases
+    bhvMarker, bhvMarker, bhvMarker, bhvMarker, bhvMarker,
+    bhvMarker, bhvMarker, bhvMarker, bhvMarker, bhvMarker,
+
     bhvMarker, bhvMarker, bhvMarker, bhvMarker, bhvMarker,
     bhvMarker, bhvMarker, bhvMarker, bhvMarker, bhvMarker
 };
 
 static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
     MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
-    MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK8, MODEL_BLOCK9, MODEL_BLOCK10
+    MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK8, MODEL_BLOCK9, MODEL_BLOCK10,
+
+    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
+    MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK8, MODEL_BLOCK9, MODEL_BLOCK3
 };
 
 static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
     bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
-    bhvBlock6, bhvBlock7, bhvBlock8, bhvBlock9, bhvBlock10
+    bhvBlock6, bhvBlock7, bhvBlock8, bhvBlock9, bhvBlock10,
+
+    bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
+    bhvBlock6, bhvBlock7, bhvBlock8, bhvBlock9, bhvBlock3
 };
 
 s32 to_grid_index(f32 pos) {
@@ -156,8 +170,7 @@ void update_marker(struct MarioState *m) {
 
 // place object to grid
 void update_player_object_placement(struct MarioState *m) {
-
-    if (gCurrLevelNum >= MAX_LEVELS) return; // safty :)
+    if (gCurrLevelNum >= MAX_LEVELS) return; // safety :)
     if (!marker) return;
 
     s32 markerGridX = to_grid_index(marker->oPosX);
@@ -170,7 +183,8 @@ void update_player_object_placement(struct MarioState *m) {
             return;
         }
         if (!find_placed_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ)) {
-            place_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ, gSelectedBlockType + 1, (gBlockRotationYaw >> 14) & 0x03);
+            place_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ,
+                        gSelectedBlockType + 1, (gBlockRotationYaw >> 14) & 0x03);
 
             s32 x = from_grid_index(markerGridX);
             s32 y = from_grid_index(markerGridY);
@@ -188,28 +202,43 @@ void update_player_object_placement(struct MarioState *m) {
 
     if (gPlayer1Controller->buttonPressed & U_JPAD) {
         gBlockRotationYaw = (gBlockRotationYaw - 0x4000) & 0xC000;
-    }    
+    }
 
     if (gPlayer1Controller->buttonPressed & R_JPAD) {
-        gSelectedBlockType = (gSelectedBlockType + 1) % BLOCK_TYPE_COUNT;
-        gSelectedMarkerType = (gSelectedMarkerType + 1) % MARKER_TYPE_COUNT;
+        gSelectedBlockType++;
+        if (gSelectedBlockType >= BLOCK_TYPE_COUNT) gSelectedBlockType = 0;
+
+        gSelectedMarkerType = gSelectedBlockType;
+        gHotbarPage = gSelectedBlockType / 10;
         update_selected_block_flags();
+
         if (marker) {
             obj_mark_for_deletion(marker);
-            marker = spawn_object(gMarioObject, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);
+            marker = spawn_object(gMarioObject,
+                PreviewModels[gSelectedMarkerType],
+                PreviewBehaviors[gSelectedMarkerType]);
         }
     }
 
     if (gPlayer1Controller->buttonPressed & L_JPAD) {
-        gSelectedBlockType = (gSelectedBlockType - 1 + BLOCK_TYPE_COUNT) % BLOCK_TYPE_COUNT;
-        gSelectedMarkerType = (gSelectedMarkerType - 1 + MARKER_TYPE_COUNT) % MARKER_TYPE_COUNT;
+        if (gSelectedBlockType == 0)
+            gSelectedBlockType = BLOCK_TYPE_COUNT - 1;
+        else
+            gSelectedBlockType--;
+
+        gSelectedMarkerType = gSelectedBlockType;
+        gHotbarPage = gSelectedBlockType / 10;
         update_selected_block_flags();
+
         if (marker) {
             obj_mark_for_deletion(marker);
-            marker = spawn_object(gMarioObject, PreviewModels[gSelectedMarkerType], PreviewBehaviors[gSelectedMarkerType]);
+            marker = spawn_object(gMarioObject,
+                PreviewModels[gSelectedMarkerType],
+                PreviewBehaviors[gSelectedMarkerType]);
         }
     }
 }
+
 
 // ready to delete placed object if marker is on the same grid position, better then using hitbox detection for performance overall
 void system_obj_loop(void) {
