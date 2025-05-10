@@ -26,7 +26,6 @@ extern Texture texture_waterbox_jrb_water[];
 extern Texture texture_waterbox_unknown_water[];
 extern Texture texture_waterbox_lava[];
 
-extern Texture hotbar_texture_0[];
 extern Texture hotbar_texture_1[];
 extern Texture hotbar_texture_2[];
 extern Texture hotbar_texture_3[];
@@ -36,6 +35,7 @@ extern Texture hotbar_texture_6[];
 extern Texture hotbar_texture_7[];
 extern Texture hotbar_texture_8[];
 extern Texture hotbar_texture_9[];
+extern Texture hotbar_texture_10[];
 extern Texture hotbar_yellow[];
 extern Texture hotbar_blue[];
 

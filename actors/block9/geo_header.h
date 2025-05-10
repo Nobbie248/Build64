@@ -3,7 +3,7 @@ extern Lights1 block9_f3dlite_material_010_lights;
 extern u8 block9__2D7F460F2B213E5A6FA4C822B1F9531D_ci4[];
 extern u8 block9__2D7F460F2B213E5A6FA4C822B1F9531D_pal_rgba16[];
 extern Vtx block9_block9_mesh_layer_1_vtx_cull[8];
-extern Vtx block9_block9_mesh_layer_1_vtx_0[16];
+extern Vtx block9_block9_mesh_layer_1_vtx_0[18];
 extern Gfx block9_block9_mesh_layer_1_tri_0[];
 extern Gfx mat_block9_f3dlite_material_010[];
 extern Gfx mat_revert_block9_f3dlite_material_010[];

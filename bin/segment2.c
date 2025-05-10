@@ -1572,10 +1572,6 @@ ALIGNED8 static const Texture texture_hud_char_arrow_down[] = {
 #include "textures/segment2/segment2.081D0.rgba16.inc.c"
 };
 
-ALIGNED8 const Texture hotbar_texture_0[] = {
-#include "textures/segment2/hotbar_texture_0.rgba16.inc.c"
-};
-
 ALIGNED8 const Texture hotbar_texture_1[] = {
 #include "textures/segment2/hotbar_texture_1.rgba16.inc.c"
 };
@@ -1610,6 +1606,10 @@ ALIGNED8 const Texture hotbar_texture_8[] = {
 
 ALIGNED8 const Texture hotbar_texture_9[] = {
 #include "textures/segment2/hotbar_texture_9.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_10[] = {
+#include "textures/segment2/hotbar_texture_10.rgba16.inc.c"
 };
 
 ALIGNED8 const Texture hotbar_yellow[] = {
