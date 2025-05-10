@@ -29,7 +29,7 @@ struct SaveBlockPlacementData {
 
 extern u8 gIsHotbar;
 extern u8 gIsBlockType[BLOCK_TYPE_COUNT];
-extern s32 blockLimitTextTimer;
+extern s8 blockLimitTextTimer;
 extern struct Object *marker;
 extern u8 gHotbarPage;
 

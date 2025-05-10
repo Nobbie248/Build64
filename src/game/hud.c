@@ -678,6 +678,7 @@ void render_hot_bar(void) {
         hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4,hotbar_texture_5, 
         hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9, hotbar_texture_10
     };
+
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     print_generic_string ( 10, 25, "▲ Rotate");
     print_generic_string ( 10, 13, "▼ Delete");
@@ -689,9 +690,8 @@ void render_hot_bar(void) {
     sprintf(pageText, "Block Set %d", gHotbarPage + 1);
     print_generic_string(190, 40, pageText);
 
-    if (blockLimitTextTimer > 0) { // currently has a bug making it only appear if pause it hit once
-        set_text_color(255, 0, 0);
-        print_generic_string(80, 40, "Max Blocks Reached!");
+    if (blockLimitTextTimer > 0) {
+        print_generic_string(82, 40, "Max Blocks Reached!");
         blockLimitTextTimer--;
     }
 

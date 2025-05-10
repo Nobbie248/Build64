@@ -29,7 +29,7 @@ u8 gSelectedMarkerType = 0;
 u8 gIsMarkerActive = FALSE;
 u8 gIsBlockType[BLOCK_TYPE_COUNT] = { 0 };
 u8 gIsHotbar;
-s32 blockLimitTextTimer = 0;
+s8 blockLimitTextTimer = 0;
 u8 gHotbarPage = 0;
 
 
