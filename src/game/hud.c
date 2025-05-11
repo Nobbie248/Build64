@@ -675,7 +675,7 @@ void render_hot_bar(void) {
         hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4, hotbar_texture_5, 
         hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9, hotbar_texture_10,
         
-        hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4,hotbar_texture_5, 
+        hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4, hotbar_texture_5, 
         hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9, hotbar_texture_10
     };
 
