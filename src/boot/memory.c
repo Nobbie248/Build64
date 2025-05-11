@@ -102,7 +102,7 @@ extern uintptr_t sSegmentTable[32];
 
 
 /**
- * for small graphical effects that aren't connected to Objects.
+ * Memory pool for small graphical effects that aren't connected to Objects.
  * Used for colored text, paintings, and environmental snow and bubbles.
  */
 struct MemoryPool *gEffectsMemoryPool __attribute__((section(".data")));
@@ -178,7 +178,7 @@ extern u8 _sbssSegmentBssEnd[];
 extern u8 _poolStart[];
 
 /**
- * Initialize the main. This pool is conceptually regions
+ * Initialize the main memory pool. This pool is conceptually regions
  * that grow inward from the left and right. It therefore only supports
  * freeing the object that was most recently allocated from a side.
  */
