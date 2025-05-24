@@ -32,12 +32,11 @@ u8 gIsHotbar;
 s8 blockLimitTextTimer = 0;
 u8 gHotbarPage = 0;
 
-
 static const u32 PreviewModels[MARKER_TYPE_COUNT] = {
-    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,
-    MODEL_MARKER6, MODEL_MARKER7, MODEL_MARKER8, MODEL_MARKER9, MODEL_MARKER10,
+    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,       //page 1
+    MODEL_MARKER6, MODEL_MARKER7, MODEL_MARKER8, MODEL_MARKER9, MODEL_MARKER10, 
 
-    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,
+    MODEL_MARKER, MODEL_MARKER2, MODEL_MARKER3, MODEL_MARKER4, MODEL_MARKER5,       //page 2
     MODEL_MARKER6, MODEL_MARKER7, MODEL_MARKER8, MODEL_MARKER9, MODEL_MARKER3
 };
 
@@ -53,7 +52,7 @@ static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
     MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
     MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK8, MODEL_BLOCK9, MODEL_BLOCK10,
 
-    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
+    MODEL_WHOMP, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
     MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK8, MODEL_BLOCK9, MODEL_BLOCK3
 };
 
@@ -61,7 +60,7 @@ static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
     bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
     bhvBlock6, bhvBlock7, bhvBlock8, bhvBlock9, bhvBlock10,
 
-    bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
+    bhvSmallWhomp, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
     bhvBlock6, bhvBlock7, bhvBlock8, bhvBlock9, bhvBlock3
 };
 
@@ -120,7 +119,7 @@ void bhv_marker_loop(void) { // not in use yet
     o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 }
 
-// this is the preview for placing
+// this is the preview block for placing
 void update_marker(struct MarioState *m) {
     if (((m->action == ACT_DISAPPEARED) ||
          (m->action == ACT_PUSHING_DOOR) ||
@@ -180,6 +179,12 @@ void update_player_object_placement(struct MarioState *m) {
     if (gPlayer1Controller->buttonPressed & L_TRIG) {
         if (gPlacedBlockCounts[gCurrLevelNum] >= MAX_PLACED_BLOCKS_PER_LEVEL) {
             blockLimitTextTimer = 40;
+            play_sound(SOUND_MENU_CAMERA_BUZZ, gGlobalSoundSource);
+            return;
+        }
+        if (markerGridX >= GRID_MAP_SIZE || markerGridY >= GRID_MAP_SIZE || markerGridZ >= GRID_MAP_SIZE || // Prevent placing out of bounds
+            markerGridX < 0 || markerGridY < 0 || markerGridZ < 0) {
+            play_sound(SOUND_MENU_CAMERA_BUZZ, gGlobalSoundSource);    
             return;
         }
         if (!find_placed_block(gCurrLevelNum, markerGridX, markerGridY, markerGridZ)) {
@@ -189,7 +194,8 @@ void update_player_object_placement(struct MarioState *m) {
             s32 x = from_grid_index(markerGridX);
             s32 y = from_grid_index(markerGridY);
             s32 z = from_grid_index(markerGridZ);
-
+            
+            play_sound(SOUND_MENU_CLICK_FILE_SELECT, gGlobalSoundSource);
             spawn_object_abs_with_rot(
                 m->marioObj, 0,
                 BlockModels[gSelectedBlockType],
@@ -197,14 +203,26 @@ void update_player_object_placement(struct MarioState *m) {
                 x, y, z,
                 0, gBlockRotationYaw, 0
             );
+            f32 oldX = m->marioObj->oPosX;
+            f32 oldY = m->marioObj->oPosY;
+            f32 oldZ = m->marioObj->oPosZ;
+            m->marioObj->oPosX = x;
+            m->marioObj->oPosY = y;
+            m->marioObj->oPosZ = z;
+            spawn_mist_particles_variable(0, 0, 46.0f);
+            m->marioObj->oPosX = oldX;
+            m->marioObj->oPosY = oldY;
+            m->marioObj->oPosZ = oldZ;
         }
     }
 
     if (gPlayer1Controller->buttonPressed & U_JPAD) {
+        play_sound(SOUND_MENU_MESSAGE_NEXT_PAGE, gGlobalSoundSource);
         gBlockRotationYaw = (gBlockRotationYaw - 0x4000) & 0xC000;
     }
 
     if (gPlayer1Controller->buttonPressed & R_JPAD) {
+        play_sound(SOUND_MENU_MESSAGE_NEXT_PAGE, gGlobalSoundSource);
         gSelectedBlockType++;
         if (gSelectedBlockType >= BLOCK_TYPE_COUNT) gSelectedBlockType = 0;
 
@@ -221,6 +239,7 @@ void update_player_object_placement(struct MarioState *m) {
     }
 
     if (gPlayer1Controller->buttonPressed & L_JPAD) {
+        play_sound(SOUND_MENU_MESSAGE_NEXT_PAGE, gGlobalSoundSource);
         if (gSelectedBlockType == 0)
             gSelectedBlockType = BLOCK_TYPE_COUNT - 1;
         else
@@ -239,7 +258,6 @@ void update_player_object_placement(struct MarioState *m) {
     }
 }
 
-
 // ready to delete placed object if marker is on the same grid position, better then using hitbox detection for performance overall
 void system_obj_loop(void) {
     if (marker != NULL && (gPlayer1Controller->buttonPressed & D_JPAD)) {
@@ -251,15 +269,27 @@ void system_obj_loop(void) {
         s32 oz = to_grid_index(o->oPosZ);
 
         if (gx == ox && gy == oy && gz == oz) {
+            play_sound(SOUND_ACTION_BRUSH_HAIR, gGlobalSoundSource);
             remove_block(gCurrLevelNum, ox, oy, oz);
             obj_mark_for_deletion(o);
         }
+    }
+    if ((marker != NULL) && 
+        (gPlayer1Controller->buttonDown & L_TRIG) &&
+        (gPlayer1Controller->buttonDown & R_TRIG) &&
+        (gPlayer1Controller->buttonDown & D_JPAD) &&
+        (gPlayer1Controller->buttonDown & A_BUTTON)) {
+
+        s32 ox = to_grid_index(o->oPosX);
+        s32 oy = to_grid_index(o->oPosY);
+        s32 oz = to_grid_index(o->oPosZ);
+        remove_block(gCurrLevelNum, ox, oy, oz);
+        obj_mark_for_deletion(o);
     }
 }
 
 void system_obj_loop_door(void) {
     if (o->oAction == 0) {
-        // Spawn door in front of this object based on its yaw
         s16 yaw = o->oFaceAngleYaw;
         f32 offset = 115.0f;
         f32 dx = offset * sins(yaw);
@@ -284,9 +314,9 @@ void system_obj_loop_door(void) {
         s32 oz = to_grid_index(o->oPosZ);
 
         if (gx == ox && gy == oy && gz == oz) {
+            play_sound(SOUND_ACTION_BRUSH_HAIR, gGlobalSoundSource);
             struct Object *door = cur_obj_nearest_object_with_behavior(bhvDoor);
             if (door != NULL) {
-                // Compare door position with calculated door offset
                 s16 yaw = o->oFaceAngleYaw;
                 f32 offset = 115.0f;
                 f32 dx = offset * sins(yaw);
@@ -300,13 +330,40 @@ void system_obj_loop_door(void) {
                     obj_mark_for_deletion(door);
                 }
             }
-
             remove_block(gCurrLevelNum, ox, oy, oz);
             obj_mark_for_deletion(o);
         }
     }
-}
+    if ((marker != NULL) && 
+        (gPlayer1Controller->buttonDown & L_TRIG) &&
+        (gPlayer1Controller->buttonDown & R_TRIG) &&
+        (gPlayer1Controller->buttonDown & D_JPAD) &&
+        (gPlayer1Controller->buttonDown & A_BUTTON)) {
 
+        s32 ox = to_grid_index(o->oPosX);
+        s32 oy = to_grid_index(o->oPosY);
+        s32 oz = to_grid_index(o->oPosZ);
+
+        struct Object *door = cur_obj_nearest_object_with_behavior(bhvDoor);
+        if (door != NULL) {
+            s16 yaw = o->oFaceAngleYaw;
+            f32 offset = 115.0f;
+            f32 dx = offset * sins(yaw);
+            f32 dz = offset * coss(yaw);
+            s32 tx = (s32)(o->oPosX + dx);
+            s32 tz = (s32)(o->oPosZ + dz);
+
+            if ((s32)door->oPosX == tx &&
+                (s32)door->oPosY == o->oPosY &&
+                (s32)door->oPosZ == tz) {
+                obj_mark_for_deletion(door);
+            }
+        }
+
+        remove_block(gCurrLevelNum, ox, oy, oz);
+        obj_mark_for_deletion(o);
+    }
+}
 
 
 // load grid into level
@@ -394,3 +451,5 @@ void spawn_random_blocks(void) {
         isSpawning = FALSE;
     }
 }
+
+

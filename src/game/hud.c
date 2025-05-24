@@ -680,18 +680,19 @@ void render_hot_bar(void) {
     };
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    print_generic_string ( 10, 25, "▲ Rotate");
+    print_generic_string ( 10, 40, "Ⓩ Lower");
+    print_generic_string ( 10, 26, "▲ Rotate");
     print_generic_string ( 10, 13, "▼ Delete");
 
-    print_generic_string(15, 40, buffer);
-    print_generic_string(35, 40, " of 200");
+    print_generic_string(75, 40, buffer);
+    print_generic_string(95, 40, " of 250");
 
     char pageText[16];
     sprintf(pageText, "Block Set %d", gHotbarPage + 1);
     print_generic_string(190, 40, pageText);
 
     if (blockLimitTextTimer > 0) {
-        print_generic_string(82, 40, "Max Blocks Reached!");
+        print_generic_string(10, 53, "Max Blocks Reached!");
         blockLimitTextTimer--;
     }
 

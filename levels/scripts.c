@@ -58,6 +58,8 @@ static const LevelScript goto_debug_level_select[6];
 #undef DEFINE_LEVEL
 #undef STUB_LEVEL
 
+extern const LevelScript script_func_global_15[];
+
 const LevelScript level_main_scripts_entry[] = {
     LOAD_YAY0(          /*seg*/ SEGMENT_GROUP0_YAY0,   _group0_yay0SegmentRomStart,  _group0_yay0SegmentRomEnd),
     LOAD_YAY0(          /*seg*/ SEGMENT_COMMON1_YAY0, _common1_yay0SegmentRomStart, _common1_yay0SegmentRomEnd),
@@ -65,6 +67,7 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_RAW_WITH_CODE( /*seg*/ SEGMENT_COMMON1_GEO,   _common1_geoSegmentRomStart,  _common1_geoSegmentRomEnd, _common1_geoSegmentBssStart, _common1_geoSegmentBssEnd),
     LOAD_RAW_WITH_CODE( /*seg*/ SEGMENT_BEHAVIOR_DATA,    _behaviorSegmentRomStart,     _behaviorSegmentRomEnd,   _behaviorSegmentBssStart,     _behaviorSegmentBssEnd),
     ALLOC_LEVEL_POOL(),
+    CALL(0, script_func_global_15),
     LOAD_MODEL_FROM_GEO(MODEL_MARIO,                   mario_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SMOKE,                   smoke_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SPARKLES,                sparkles_geo),
@@ -132,6 +135,7 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_BLOCK9,                  block9_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BLOCK10,                 block10_geo),
     LOAD_MODEL_FROM_GEO(MODEL_UNKNOWN_DOOR_21,    wooden_door_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_WHOMP,                   whomp_geo),
 #ifdef IA8_30FPS_COINS
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN,             silver_coin_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN_NO_SHADOW,   silver_coin_no_shadow_geo),
