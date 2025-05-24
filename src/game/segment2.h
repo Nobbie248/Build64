@@ -36,6 +36,16 @@ extern Texture hotbar_texture_7[];
 extern Texture hotbar_texture_8[];
 extern Texture hotbar_texture_9[];
 extern Texture hotbar_texture_10[];
+extern Texture hotbar_texture_11[];
+extern Texture hotbar_texture_12[];
+extern Texture hotbar_texture_13[];
+extern Texture hotbar_texture_14[];
+extern Texture hotbar_texture_15[];
+extern Texture hotbar_texture_16[];
+extern Texture hotbar_texture_17[];
+extern Texture hotbar_texture_18[];
+extern Texture hotbar_texture_19[];
+extern Texture hotbar_texture_20[];
 extern Texture hotbar_yellow[];
 extern Texture hotbar_blue[];
 

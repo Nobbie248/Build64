@@ -350,7 +350,7 @@ Gfx block4_block4_mesh_layer_1_tri_0[] = {
 };
 
 
-Gfx mat_block4_f3dlite_material_011[] = {
+Gfx mat_block4_f3dlite_material_001[] = {
     gsSPLightColor(LIGHT_1, 0xffffffff),
     gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsDPPipeSync(),
@@ -369,7 +369,7 @@ Gfx mat_block4_f3dlite_material_011[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx mat_revert_block4_f3dlite_material_011[] = {
+Gfx mat_revert_block4_f3dlite_material_001[] = {
 	gsDPPipeSync(),
 	gsDPSetAlphaDither(G_AD_DISABLE),
 	gsDPSetTextureLUT(G_TT_NONE),
@@ -381,9 +381,9 @@ Gfx block4_block4_mesh_layer_1[] = {
 	gsSPVertex(block4_block4_mesh_layer_1_vtx_cull + 0, 8, 0),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPCullDisplayList(0, 7),
-	gsSPDisplayList(mat_block4_f3dlite_material_011),
+	gsSPDisplayList(mat_block4_f3dlite_material_001),
 	gsSPDisplayList(block4_block4_mesh_layer_1_tri_0),
-	gsSPDisplayList(mat_revert_block4_f3dlite_material_011),
+	gsSPDisplayList(mat_revert_block4_f3dlite_material_001),
 	gsDPPipeSync(),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPClearGeometryMode(G_TEXTURE_GEN),

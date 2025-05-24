@@ -1612,6 +1612,46 @@ ALIGNED8 const Texture hotbar_texture_10[] = {
 #include "textures/segment2/hotbar_texture_10.rgba16.inc.c"
 };
 
+ALIGNED8 const Texture hotbar_texture_11[] = {
+#include "textures/segment2/hotbar_texture_11.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_12[] = {
+#include "textures/segment2/hotbar_texture_12.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_13[] = {
+#include "textures/segment2/hotbar_texture_13.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_14[] = {
+#include "textures/segment2/hotbar_texture_14.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_15[] = {
+#include "textures/segment2/hotbar_texture_15.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_16[] = {
+#include "textures/segment2/hotbar_texture_16.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_17[] = {
+#include "textures/segment2/hotbar_texture_17.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_18[] = {
+#include "textures/segment2/hotbar_texture_18.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_19[] = {
+#include "textures/segment2/hotbar_texture_19.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture hotbar_texture_20[] = {
+#include "textures/segment2/hotbar_texture_20.rgba16.inc.c"
+};
+
 ALIGNED8 const Texture hotbar_yellow[] = {
 #include "textures/segment2/hotbar_yellow.rgba16.inc.c"
 };

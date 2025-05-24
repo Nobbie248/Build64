@@ -348,7 +348,7 @@ Gfx marker4_marker4_mesh_layer_5_tri_0[] = {
 };
 
 
-Gfx mat_marker4_f3dlite_material_014[] = {
+Gfx mat_marker4_f3dlite_material_005[] = {
 	gsSPGeometryMode(G_LIGHTING, 0),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0),
@@ -367,7 +367,7 @@ Gfx mat_marker4_f3dlite_material_014[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx mat_revert_marker4_f3dlite_material_014[] = {
+Gfx mat_revert_marker4_f3dlite_material_005[] = {
 	gsSPGeometryMode(0, G_LIGHTING),
 	gsDPPipeSync(),
 	gsDPSetAlphaDither(G_AD_DISABLE),
@@ -380,9 +380,9 @@ Gfx marker4_marker4_mesh_layer_5[] = {
 	gsSPVertex(marker4_marker4_mesh_layer_5_vtx_cull + 0, 8, 0),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPCullDisplayList(0, 7),
-	gsSPDisplayList(mat_marker4_f3dlite_material_014),
+	gsSPDisplayList(mat_marker4_f3dlite_material_005),
 	gsSPDisplayList(marker4_marker4_mesh_layer_5_tri_0),
-	gsSPDisplayList(mat_revert_marker4_f3dlite_material_014),
+	gsSPDisplayList(mat_revert_marker4_f3dlite_material_005),
 	gsDPPipeSync(),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPClearGeometryMode(G_TEXTURE_GEN),

@@ -675,8 +675,8 @@ void render_hot_bar(void) {
         hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4, hotbar_texture_5, 
         hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9, hotbar_texture_10,
         
-        hotbar_texture_1, hotbar_texture_2, hotbar_texture_3, hotbar_texture_4, hotbar_texture_5, 
-        hotbar_texture_6, hotbar_texture_7, hotbar_texture_8, hotbar_texture_9, hotbar_texture_10
+        hotbar_texture_11, hotbar_texture_12, hotbar_texture_13, hotbar_texture_14, hotbar_texture_15, 
+        hotbar_texture_16, hotbar_texture_17, hotbar_texture_18, hotbar_texture_19, hotbar_texture_20
     };
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
