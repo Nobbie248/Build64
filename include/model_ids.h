@@ -593,4 +593,25 @@
 #define MODEL_MARKER10 0xF6
 #define MODEL_BLOCK10 0xF7
 
+// #define MODEL_MARKER11 0xF8
+// #define MODEL_BLOCK11 0xF9
+// #define MODEL_MARKER12 0xFA
+// #define MODEL_BLOCK12 0xFB
+// #define MODEL_MARKER13 0xFC
+// #define MODEL_BLOCK13 0xFD
+// #define MODEL_MARKER14 0xFE
+// #define MODEL_BLOCK14 0xFF
+// #define MODEL_MARKER15 0x100
+// #define MODEL_BLOCK15 0x101
+// #define MODEL_MARKER16 0x102
+// #define MODEL_BLOCK16 0x103
+// #define MODEL_MARKER17 0x104
+// #define MODEL_BLOCK17 0x105
+// #define MODEL_MARKER18 0x106
+// #define MODEL_BLOCK18 0x107
+// #define MODEL_MARKER19 0x108
+// #define MODEL_BLOCK19 0x109
+// #define MODEL_MARKER20 0x10A
+// #define MODEL_BLOCK20 0x10B
+
 #endif // MODEL_IDS_H

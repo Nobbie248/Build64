@@ -1,0 +1,18 @@
+extern const GeoLayout block17_geo[];
+extern Lights1 block17_f3dlite_material_016_lights;
+extern u8 block17__8E6A5D6EB4431B495762198F11725FC7_ci4[];
+extern u8 block17__8E6A5D6EB4431B495762198F11725FC7_pal_rgba16[];
+extern u8 block17_glass_ci4[];
+extern u8 block17_glass_pal_rgba16[];
+extern Vtx block17_block17_mesh_layer_1_vtx_cull[8];
+extern Vtx block17_block17_mesh_layer_1_vtx_0[48];
+extern Gfx block17_block17_mesh_layer_1_tri_0[];
+extern Vtx block17_block17_mesh_layer_5_vtx_cull[8];
+extern Vtx block17_block17_mesh_layer_5_vtx_0[8];
+extern Gfx block17_block17_mesh_layer_5_tri_0[];
+extern Gfx mat_block17_f3dlite_material_016[];
+extern Gfx mat_revert_block17_f3dlite_material_016[];
+extern Gfx mat_block17_f3dlite_material_017[];
+extern Gfx mat_revert_block17_f3dlite_material_017[];
+extern Gfx block17_block17_mesh_layer_1[];
+extern Gfx block17_block17_mesh_layer_5[];

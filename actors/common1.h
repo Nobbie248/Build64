@@ -380,4 +380,84 @@ extern const Collision wooden_signpost_seg3_collision_0302DD80[];
 
 #include "block10/geo_header.h"
 
+#include "block11/collision_header.h"
+
+#include "block11/geo_header.h"
+
+#include "block12/collision_header.h"
+
+#include "block12/geo_header.h"
+
+#include "block13/collision_header.h"
+
+#include "block13/geo_header.h"
+
+#include "block14/collision_header.h"
+
+#include "block14/geo_header.h"
+
+#include "block15/collision_header.h"
+
+#include "block15/geo_header.h"
+
+#include "block16/collision_header.h"
+
+#include "block16/geo_header.h"
+
+#include "block17/collision_header.h"
+
+#include "block17/geo_header.h"
+
+#include "block18/collision_header.h"
+
+#include "block18/geo_header.h"
+
+#include "block19/collision_header.h"
+
+#include "block19/geo_header.h"
+
+#include "block20/collision_header.h"
+
+#include "block20/geo_header.h"
+
+#include "marker11/collision_header.h"
+
+#include "marker11/geo_header.h"
+
+#include "marker12/collision_header.h"
+
+#include "marker12/geo_header.h"
+
+#include "marker13/collision_header.h"
+
+#include "marker13/geo_header.h"
+
+#include "marker14/collision_header.h"
+
+#include "marker14/geo_header.h"
+
+#include "marker15/collision_header.h"
+
+#include "marker15/geo_header.h"
+
+#include "marker16/collision_header.h"
+
+#include "marker16/geo_header.h"
+
+#include "marker17/collision_header.h"
+
+#include "marker17/geo_header.h"
+
+#include "marker18/collision_header.h"
+
+#include "marker18/geo_header.h"
+
+#include "marker19/collision_header.h"
+
+#include "marker19/geo_header.h"
+
+#include "marker20/collision_header.h"
+
+#include "marker20/geo_header.h"
+
 #endif
