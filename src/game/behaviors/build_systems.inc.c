@@ -52,7 +52,7 @@ static const u32 BlockModels[BLOCK_TYPE_COUNT] = {
     MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
     MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK8, MODEL_BLOCK9, MODEL_BLOCK10,
 
-    MODEL_WHOMP, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
+    MODEL_BLOCK, MODEL_BLOCK2, MODEL_BLOCK3, MODEL_BLOCK4, MODEL_BLOCK5,
     MODEL_BLOCK6, MODEL_BLOCK7, MODEL_BLOCK8, MODEL_BLOCK9, MODEL_BLOCK3
 };
 
@@ -60,7 +60,7 @@ static const BehaviorScript *BlockBehaviors[BLOCK_TYPE_COUNT] = {
     bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
     bhvBlock6, bhvBlock7, bhvBlock8, bhvBlock9, bhvBlock10,
 
-    bhvSmallWhomp, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
+    bhvBlock, bhvBlock2, bhvBlock3, bhvBlock4, bhvBlock5,
     bhvBlock6, bhvBlock7, bhvBlock8, bhvBlock9, bhvBlock3
 };
 
