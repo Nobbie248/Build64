@@ -6,7 +6,7 @@
 // this setup uses up to 26kb of sram while keeping things persistent over the game
 #define GRID_SIZE 300 // size of each block placement
 #define GRID_MAP_SIZE 64 // total size of grid in each stage
-#define MAX_LEVELS 32 // do not put less then 31 or it can crash
+#define MAX_LEVELS 31 // do not put less then 31 or it can crash
 #define MAX_PLACED_BLOCKS_PER_LEVEL 250// 250 is safe
 #define MARKER_TYPE_COUNT 20 // preview object models
 #define BLOCK_TYPE_COUNT 20 // types of objects to place

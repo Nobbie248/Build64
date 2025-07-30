@@ -19,6 +19,7 @@
 
 static const LevelScript script_jrb_area_1_macro_objects[] = {
     // Macro objects
+    OBJECT(0, 5748, -4817, 1939, 0, 0, 0, 0x70000, bhvWarp),
     OBJECT(/*model*/ MODEL_WOODEN_SIGNPOST,  /*pos*/ -6325,  1126,  1730, /*angle*/ 0, 250, 0, /*behParam*/ (DIALOG_060 << 16), /*beh*/ bhvMessagePanel),
     OBJECT(/*model*/ MODEL_NONE,             /*pos*/  5060, -4420,   720, /*angle*/ 0,   0, 0, /*behParam*/ ((COIN_FORMATION_FLAG_FLYING | COIN_FORMATION_FLAG_RING | COIN_FORMATION_FLAG_VERTICAL) << 16), /*beh*/ bhvCoinFormation),
     OBJECT(/*model*/ MODEL_EXCLAMATION_BOX,  /*pos*/  2077,  1832,  7465, /*angle*/ 0,   0, 0, /*behParam*/ (EXCLAMATION_BOX_BP_METAL_CAP << 16), /*beh*/ bhvExclamationBox),
@@ -190,6 +191,7 @@ const LevelScript level_jrb_entry[] = {
 #include "levels/jrb/areas/script_vanilla.inc.c"
 
     AREA(/*index*/ 1, jrb_geo_000A18),
+        WARP_NODE(7, LEVEL_JRB, 2, 0x0A, WARP_NO_CHECKPOINT),
         OBJECT(/*model*/ MODEL_NONE, /*pos*/ -6750, 2126, 1482, /*angle*/ 0, 90, 0, /*behParam*/ 0x000A0000, /*beh*/ bhvSpinAirborneWarp),
         WARP_NODE(/*id*/ 0x0A, /*destLevel*/ LEVEL_JRB, /*destArea*/ 0x01, /*destNode*/ 0x0A, /*flags*/ WARP_NO_CHECKPOINT),
         WARP_NODE(/*id*/ 0xF3, /*destLevel*/ LEVEL_JRB, /*destArea*/ 0x02, /*destNode*/ 0x0A, /*flags*/ WARP_NO_CHECKPOINT),

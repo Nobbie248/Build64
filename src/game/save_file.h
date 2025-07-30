@@ -25,7 +25,7 @@ struct SaveBlockSignature {
     u16 chksum;
 };
 
-#define MAX_LEVELS 32
+#define MAX_LEVELS 31
 #define MAX_PLACED_BLOCKS_PER_LEVEL 250
 extern struct SaveBlockPlacementData blockPlacementData;
 

@@ -214,8 +214,10 @@ void handle_save_menu(struct MarioState *m) {
     if (is_anim_past_end(m) && gSaveOptSelectIndex != MENU_OPT_NONE) {
         // save and continue / save and quit
         if (gSaveOptSelectIndex == MENU_OPT_SAVE_AND_CONTINUE || gSaveOptSelectIndex == MENU_OPT_SAVE_AND_QUIT) {
-            save_file_do_save(gCurrSaveFileNum - 1);
-
+            gSaveFileModified = TRUE;
+            save_file_do_save(gCurrSaveFileNum - 1); 
+            gSaveFileModified = TRUE;
+            save_file_do_save(gCurrSaveFileNum - 1); 
             if (gSaveOptSelectIndex == MENU_OPT_SAVE_AND_QUIT) {
                 fade_into_special_warp(WARP_SPECIAL_MARIO_HEAD_REGULAR, 0); // reset game
             }
